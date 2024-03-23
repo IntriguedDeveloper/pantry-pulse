@@ -1,0 +1,78 @@
+
+.wrapper {
+  width: 100vw;
+  height: max-content;
+  background-color: palegoldenrod;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
+.wrapper div {
+  display: flex;
+  width: 100%;
+  padding: 5px;
+}
+
+.sSeg {
+  justify-content: flex-end;
+}
+
+.navList {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navList li {
+  list-style: none;
+  display: inline-block;
+  margin: 5px;
+  width: max-content;
+  height: max-content;
+  text-align: center;
+}
+.navList li:hover{
+  cursor: pointer;
+}
+.brandLogo {
+  height: 50px;
+  width: 50px;
+  padding: 5px;
+}
+.brandName {
+  font-family: 'Sunshiney', cursive;
+  font-size: 30px;
+}
+.cartIcon{
+  width: 30px;
+  height: 30px;
+  margin: 10px;
+}
+.profileState{
+  width: max-content;
+  height: max-content;
+}
+.profileState button{
+  border-radius: 5px;
+  border: 2px solid black;
+  height: 35px;
+  width: 70px;
+  font-family: "Truculenta";
+  font-size: larger;
+  background-color: rgb(139, 143, 142);
+  color: rgb(243, 243, 39);
+  
+}
+.profileState button:hover{
+  cursor: pointer;
+  background-color: rgb(72, 93, 86);
+  color: white;
+ 
+}
+.searchIcon{
+  height: 30px;
+  width: 30px;
+}
