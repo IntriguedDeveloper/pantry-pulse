@@ -1,5 +1,10 @@
-
 .wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.navBarWrapper {
   width: 100vw;
   height: max-content;
   background-color: palegoldenrod;
@@ -9,7 +14,7 @@
   flex-direction: row;
   align-content: space-between;
 }
-.wrapper div {
+.navBarWrapper div {
   display: flex;
   width: 100%;
   padding: 5px;
@@ -34,7 +39,7 @@
   height: max-content;
   text-align: center;
 }
-.navList li:hover{
+.navList li:hover {
   cursor: pointer;
 }
 .brandLogo {
@@ -43,19 +48,19 @@
   padding: 5px;
 }
 .brandName {
-  font-family: 'Sunshiney', cursive;
+  font-family: "Sunshiney", cursive;
   font-size: 30px;
 }
-.cartIcon{
+.cartIcon {
   width: 30px;
   height: 30px;
   margin: 10px;
 }
-.profileState{
+.profileState {
   width: max-content;
   height: max-content;
 }
-.profileState button{
+.profileState button {
   border-radius: 5px;
   border: 2px solid black;
   height: 35px;
@@ -64,15 +69,112 @@
   font-size: larger;
   background-color: rgb(139, 143, 142);
   color: rgb(243, 243, 39);
-  
 }
-.profileState button:hover{
+.profileState button:hover {
   cursor: pointer;
   background-color: rgb(72, 93, 86);
   color: white;
- 
 }
-.searchIcon{
+.searchIcon {
   height: 30px;
   width: 30px;
+}
+@media only screen and (max-width: 400px) {
+  .brandName {
+    font-size: 25px;
+  }
+  .cartIcon {
+    width: 25px;
+    height: 25px;
+  }
+  .searchIcon {
+    width: 25px;
+    height: 25px;
+  }
+  .brandLogo {
+    width: 35px;
+    height: 35px;
+  }
+}
+@keyframes rollIn {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.searchWrapper {
+  background-color: aqua;
+
+  border-radius: 5px;
+  padding: 5px;
+  animation: rollIn 1s ease;
+}
+.searchBarContainer {
+  margin: 0;
+  width: 70vw;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.searchBar {
+  margin: 0;
+  width: 100%;
+  height: 30px;
+  border: 2px solid palegoldenrod;
+  outline: none;
+  border-radius: 5px;
+}
+.searchBar:focus {
+  border: 2px solid rgb(141, 141, 52);
+}
+.searchResultsContainer {
+  width: 70vw;
+  height: max-content;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+.searchResultsList {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.searchResultsList li {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  border: 1px solid black;
+  height: 30px;
+}
+.searchWrapperInactive {
+  opacity: 0;
+  display: none;
+
+}
+.closeButtonContainer{
+  display: flex;
+  justify-content: flex-end;
+}
+.closeButton{
+  width:30px;
+  height: 30px;
+}
+.closeButton:hover{
+  cursor: pointer;
+
 }
