@@ -2,7 +2,7 @@
 import { useState } from "react";
 import styles from "./Navbar.module.css";
 export default function Navbar() {
-  const[isClicked, setClicked] = useState(false);
+  const[isClicked, setClicked] = useState(true);
   const toggleSearchWrapper = () => {
     setClicked(!isClicked);
   }

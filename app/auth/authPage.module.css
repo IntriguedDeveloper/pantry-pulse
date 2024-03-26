@@ -1,0 +1,46 @@
+.loginFormContainer {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.loginFormContainer h2 {
+  text-align: center;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginForm input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.loginForm button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.loginForm button:hover {
+  background-color: #0056b3;
+}
+
+.toggleForm {
+  text-align: center;
+  cursor: pointer;
+  color: #007bff;
+}
+
+.toggleForm:hover {
+  text-decoration: underline;
+}
