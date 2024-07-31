@@ -1,10 +1,12 @@
 "use client";
 import styles from "./adminAuthLogin.module.css";
 import { AdminAuthorizationLogin } from "../handler";
-import { useState } from "react";
-export default function AdminAuthLogin({AdminState = false}) {
+import { useEffect, useState } from "react";
+export default function AdminAuthLogin({ AdminState }) {
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
+  const [adminState, setAdminState] = useState(null);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
@@ -12,10 +14,13 @@ export default function AdminAuthLogin({AdminState = false}) {
     formData.append("adminPassword", adminPassword);
 
     // Call AdminAuthorization function with form data
-    await AdminAuthorizationLogin(formData);
-
-    
+    const response = await AdminAuthorizationLogin(formData);
+    setAdminState(response.adminState);
   };
+
+  useEffect(() => {
+    console.log(adminState);
+  }, [adminState]);
   return (
     <div className={styles.wrapper}>
       <div className={styles.formContainer}>
