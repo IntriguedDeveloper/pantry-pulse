@@ -13,7 +13,7 @@ export default function Navbar() {
           <div className={styles.fSeg}>
             <ul className={styles.navList}>
               <li>
-                <img src="/navLogo.png" className={styles.brandLogo}></img>
+                <img src="/brandLogo.png" className={styles.brandLogo}></img>
               </li>
               <li className={styles.brandName}>PantryPulse</li>
             </ul>

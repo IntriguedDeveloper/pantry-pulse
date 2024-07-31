@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
-          crossorigin
+          crossOrigin = "true"
         ></link>
         <link
           href="https://fonts.googleapis.com/css2?family=Sunshiney&display=swap"
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
-          crossorigin
+          crossOrigin = "true"
         ></link>
         <link
           href="https://fonts.googleapis.com/css2?family=Truculenta:opsz,wght@12..72,100..900&display=swap"
