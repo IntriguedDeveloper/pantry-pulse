@@ -37,15 +37,22 @@ export async function AdminAuthorizationLogin(formData) {
       credential: admin.credential.cert(adminKey),
     });
   }
+
   const userRecord = await adminAuth
     .getAuth()
-    .getUserByEmail(formData.get("adminEmail"));
-  console.log(userRecord);
-  console.log(userRecord.customClaims);
-  if (userRecord.customClaims && userRecord.customClaims.admin === true) {
-    console.log("User is admin");
-    adminState = true;
-  }
+    .getUserByEmail(formData.get("adminEmail"))
+    .then((userRecord) => {
+      if (userRecord.customClaims && userRecord.customClaims.admin === true) {
+        console.log("User is admin");
+        adminState = true;
+      } else {
+        adminState = false;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
+  console.log(adminState);
   return { adminState };
 }

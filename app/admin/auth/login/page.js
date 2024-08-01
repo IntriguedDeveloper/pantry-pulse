@@ -19,7 +19,12 @@ export default function AdminAuthLogin({ AdminState }) {
   };
 
   useEffect(() => {
-    console.log(adminState);
+    if(adminState == true){
+      console.log("Ok to redirect")
+    }
+    else{
+      console.log("Not Ok")
+    }
   }, [adminState]);
   return (
     <div className={styles.wrapper}>
