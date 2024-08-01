@@ -2,7 +2,12 @@
 import styles from "./adminAuthLogin.module.css";
 import { AdminAuthorizationLogin } from "../handler";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { auth } from "@/firebase/clientApp";
+import { signInWithEmailAndPassword } from "firebase/auth";
 export default function AdminAuthLogin({ AdminState }) {
+  const router = useRouter();
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
   const [adminState, setAdminState] = useState(null);
@@ -12,20 +17,33 @@ export default function AdminAuthLogin({ AdminState }) {
     const formData = new FormData();
     formData.append("adminEmail", adminEmail);
     formData.append("adminPassword", adminPassword);
-
+    console.info("function triggered")
     // Call AdminAuthorization function with form data
     const response = await AdminAuthorizationLogin(formData);
+    console.info("await over")
     setAdminState(response.adminState);
   };
 
   useEffect(() => {
-    if(adminState == true){
-      console.log("Ok to redirect")
+    if(adminState == true) {
+      signInWithEmailAndPassword(auth, adminEmail, adminPassword)
+      .then((userCredential) => {
+        router.push('/admin/dashboard');
+      })
+      .catch((error) => {
+        console.error(error.code);
+        console.error(error.message)
+        alert("Wrong email or password")
+        setAdminState(null);
+      });
     }
-    else{
-      console.log("Not Ok")
+    else if(adminState == false){
+      alert("You are not authorized as admin");
+      setAdminState(null);
     }
+    
   }, [adminState]);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.formContainer}>

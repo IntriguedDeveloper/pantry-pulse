@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./adminAuthSignUp.module.css";
 import { AdminAuthorizationSignUp } from "../handler";
-
-export default function AdminAuthSignUp({ AlertMessage = false }) {
+import { useRouter } from "next/navigation";
+export default function AdminAuthSignUp() {
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
-
+  const[alertMessage, setAlertMessage] = useState(null);
+  const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
@@ -15,9 +16,15 @@ export default function AdminAuthSignUp({ AlertMessage = false }) {
     formData.append("adminPassword", adminPassword);
 
     // Call AdminAuthorization function with form data
-    await AdminAuthorizationSignUp(formData);
+    const response = await AdminAuthorizationSignUp(formData);
+    setAlertMessage(response.alertMessage);
   };
-
+  useEffect(() => {
+    if(alertMessage == true){
+      alert("Signup successful")
+      router.push('/admin/auth/login')
+    }
+  },[alertMessage])
   return (
     <>
       <div className={styles.wrapper}>
