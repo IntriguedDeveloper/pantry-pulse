@@ -1,7 +1,5 @@
 "use server";
-import AdminAuthSignUp from "./signup/page";
-import AdminAuthLogin from "./login/page";
-import { redirect } from "next/navigation";
+
 const adminKey = require("@/firebase/adminKey.json");
 const admin = require("firebase-admin");
 const adminAuth = require("firebase-admin/auth");
@@ -31,7 +29,7 @@ export async function AdminAuthorizationSignUp(formData) {
 
   console.log([...formData.entries()]);
   console.log(alertMessage);
-  return {alertMessage};
+  return { alertMessage };
 }
 
 export async function AdminAuthorizationLogin(formData) {

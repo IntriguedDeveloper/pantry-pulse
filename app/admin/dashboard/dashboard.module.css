@@ -1,0 +1,20 @@
+.headerDiv {
+  background-color: rgb(0, 168, 0);
+  width: 100vw;
+  height: 50px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 20px;
+
+}
+
+.actionCategories {
+  display: flex;
+  flex-wrap: wrap;
+  
+  justify-content: center;
+
+}
