@@ -1,62 +1,101 @@
-.wrapper{
-    width: 100vw;
-    height: 100vh;
-    margin : 0;
-    padding : 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.container{
-    padding: 20px;
-    background-color: antiquewhite;
-    height: 90vh;
-    width: 600px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
+.container {
+  padding: 20px;
+  background-color: antiquewhite;
+  height: 90vh;
+  width: 600px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
-.inputForm{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+.inputForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
-.inputBox{
-    height: 40px;
-    width : 300px;
-    font-size: medium;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+.inputBox {
+  height: 40px;
+  width: 300px;
+  font-size: medium;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-.dropDownOverlayContainer{
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-   
+.dropDownOverlayContainer {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  z-index: 2;
 }
-.dropDownButton{
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid black;
-    background-color: rgb(89, 173, 173);
-    width: max-content;
-    height: 25px;
-    margin-top: 20px;
-    padding: 3px;
+.dropDownDiv {
+  border: 1px solid black;
+  height: 70vh;
+  width: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(210, 206, 206, 0.95);
+  position: relative;
 }
-.dropDownIcon{
-    margin : 5px;
-    padding : 0;
-    height: 20px;
-    width: auto;
+.dropDownButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+  background-color: rgb(89, 173, 173);
+  width: max-content;
+  height: 25px;
+  margin-top: 20px;
+  padding: 3px;
 }
-.dropDownButton:hover{
+.dropDownIcon {
+  margin: 5px;
+  padding: 0;
+  height: 20px;
+  width: auto;
+}
+.dropDownButton:hover {
+  cursor: pointer;
+  background-color: rgb(84, 156, 156);
+}
+.closeDropDown {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.closeDropDown:hover{
     cursor: pointer;
-    background-color: rgb(84, 156, 156);
+}
+.categoryNames{
+    padding: 0;
+    margin: 0;
+}
+.categoryNames li{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.searchBar{
+  height: 30px;
+  width: 200px;
+  border : none;
+  outline: none;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: large;
+  margin-bottom: 20px;
+
 }

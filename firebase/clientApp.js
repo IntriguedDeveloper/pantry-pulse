@@ -2,7 +2,7 @@ import {initializeApp} from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import "firebase/auth";
 import "firebase/firestore";
-
+import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyC84FD4g78rZCDO29F18S_oM1GVyzrJN7g",
   authDomain: "pantrypulse-27c70.firebaseapp.com",
@@ -14,4 +14,5 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db = getFirestore(app);
 export default app;

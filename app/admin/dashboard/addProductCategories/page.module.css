@@ -1,0 +1,124 @@
+/* Overall page container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #f0f4f8, #c1d1e8);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Input and button container */
+.addCategory {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #ffffff;
+}
+
+/* Input box styling */
+.inputBox {
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  margin-right: 10px;
+  width: 250px;
+  transition: border 0.3s;
+}
+
+.inputBox:focus {
+  outline: none;
+  border-color: #0056b3;
+}
+
+/* Add button styling */
+.addButton {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Category list container */
+.categoryList {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Empty message for no categories */
+.emptyMessage {
+  color: #666;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* List container styling */
+.ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+/* List item styling */
+.li {
+  padding: 10px;
+  background-color: #f0f0f0;
+  margin: 8px 0;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.li:hover {
+  background-color: #e0e0e0;
+}
+
+/* Responsive layout for mobile screens */
+@media (max-width: 500px) {
+  .container {
+    padding: 10px;
+    justify-content: flex-start;
+  }
+
+  .inputBox {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .addCategory {
+    flex-direction: column;
+  }
+}
+.categoryDeleteIcon{
+    height: 30px;
+    width: 30px;
+}
+.categoryDeleteIcon:hover {
+    cursor:pointer;
+}
