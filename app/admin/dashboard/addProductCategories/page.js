@@ -1,28 +1,45 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import deleteIcon from '/public/deleteIcon.svg'
+import deleteIcon from "/public/deleteIcon.svg";
 import Image from "next/image";
+import { addCategory, getCategories } from "./handler";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebase/clientApp";
 export default function Home() {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
+  
+  //TODO : use next js suspense for loading spinner of categories
+  //TODO : configure delete category function's backend
 
+  useEffect(() => {
+    async function fetchCategories() {
+      const fetchedCategories = await getCategories();
+      setCategories(fetchedCategories);
+    }
+
+    fetchCategories();
+  }, []);
   // Handle the input change
-  const handleInputChange = (event) => {
+  const handleInputChange = async (event) => {
     setNewCategory(event.target.value);
   };
 
   // Handle adding a new category
-  const handleAddCategory = () => {
+  const handleAddCategory = async () => {
     if (newCategory.trim() !== "") {
+      await addCategory(newCategory);
       setCategories([...categories, newCategory]);
+
       setNewCategory(""); // Clear the input field after adding
     }
   };
   const handleCategoryDeletion = (index) => {
-    const updatedCategories = categories.filter((_ , i) => i != index)
-    setCategories(updatedCategories)
-  }
+    //delete by filtering by index
+    const updatedCategories = categories.filter((_, i) => i != index);
+    setCategories(updatedCategories);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.addCategory}>
@@ -46,7 +63,14 @@ export default function Home() {
             {categories.map((category, index) => (
               <li key={index} className={styles.li}>
                 {category}
-                <Image src = {deleteIcon} className={styles.categoryDeleteIcon} onClick={() => {handleCategoryDeletion(index)}}></Image>
+                <Image
+                  src={deleteIcon}
+                  className={styles.categoryDeleteIcon}
+                  onClick={() => {
+                    handleCategoryDeletion(index);
+                  }}
+                  alt="deleteicon"
+                ></Image>
               </li>
             ))}
           </ul>

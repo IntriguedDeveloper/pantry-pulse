@@ -25,7 +25,7 @@
 .inputBox {
   padding: 12px;
   font-size: 16px;
-  border: 2px solid #007bff;
+  border: 2px solid #495869;
   border-radius: 4px;
   margin-right: 10px;
   width: 250px;
@@ -40,7 +40,7 @@
 /* Add button styling */
 .addButton {
   padding: 12px 20px;
-  background-color: #007bff;
+  background-color: #063c75;
   color: white;
   border: none;
   border-radius: 4px;
