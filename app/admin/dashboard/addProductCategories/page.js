@@ -3,20 +3,26 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import deleteIcon from "/public/deleteIcon.svg";
 import Image from "next/image";
-import { addCategory, getCategories } from "./handler";
+import { addCategory, getCategories, deleteCategory } from "./handler";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/clientApp";
 export default function Home() {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
-  
-  //TODO : use next js suspense for loading spinner of categories
+  const [isLoading, setIsLoading] = useState(true);
+
   //TODO : configure delete category function's backend
 
   useEffect(() => {
     async function fetchCategories() {
-      const fetchedCategories = await getCategories();
-      setCategories(fetchedCategories);
+      try {
+        const fetchedCategories = await getCategories();
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Failed to display categories");
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     fetchCategories();
@@ -35,8 +41,8 @@ export default function Home() {
       setNewCategory(""); // Clear the input field after adding
     }
   };
-  const handleCategoryDeletion = (index) => {
-    //delete by filtering by index
+  const handleCategoryDeletion = async(categoryName, index) => {
+    await deleteCategory(categoryName);
     const updatedCategories = categories.filter((_, i) => i != index);
     setCategories(updatedCategories);
   };
@@ -56,7 +62,9 @@ export default function Home() {
       </div>
       <div className={styles.categoryList}>
         <h3>Categories</h3>
-        {categories.length === 0 ? (
+        {isLoading ? (
+          <span className={styles.loader}></span>
+        ) : categories.length === 0 ? (
           <p className={styles.emptyMessage}>No categories added yet.</p>
         ) : (
           <ul className={styles.ul}>
@@ -67,7 +75,7 @@ export default function Home() {
                   src={deleteIcon}
                   className={styles.categoryDeleteIcon}
                   onClick={() => {
-                    handleCategoryDeletion(index);
+                    handleCategoryDeletion(category, index);
                   }}
                   alt="deleteicon"
                 ></Image>
