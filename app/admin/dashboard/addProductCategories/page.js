@@ -11,8 +11,6 @@ export default function Home() {
   const [newCategory, setNewCategory] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  //TODO : configure delete category function's backend
-
   useEffect(() => {
     async function fetchCategories() {
       try {
@@ -41,7 +39,7 @@ export default function Home() {
       setNewCategory(""); // Clear the input field after adding
     }
   };
-  const handleCategoryDeletion = async(categoryName, index) => {
+  const handleCategoryDeletion = async (categoryName, index) => {
     await deleteCategory(categoryName);
     const updatedCategories = categories.filter((_, i) => i != index);
     setCategories(updatedCategories);

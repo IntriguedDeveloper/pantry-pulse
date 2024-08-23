@@ -6,70 +6,95 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Modeuristic", sans-serif;
+  background-color: #FFFFFF; /* White Background */
 }
+
 .container {
   padding: 20px;
-  background-color: antiquewhite;
+  background-color: #f6e2e2; /* Very Light Gray for slight contrast */
   height: 90vh;
   width: 600px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  color: #333333; /* Dark Charcoal */
+  border: 1px solid #E0E0E0; /* Subtle border for the container */
+  border-radius: 10px;
 }
+
 .inputForm {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
+
 .inputBox {
   height: 40px;
   width: 300px;
   font-size: medium;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #fdf7f7; /* White */
+  color: #333333; /* Dark Charcoal */
+  border: 2px solid #A8D5BA; /* Soft Mint Green */
+  border-radius: 5px;
+  padding: 5px;
 }
+
 .dropDownOverlayContainer {
-  position: fixed;
+  position: static;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 100vh;
+  height: max-content;
+  margin-top: 10px;
   top: 0;
   z-index: 2;
 }
+
 .dropDownDiv {
-  border: 1px solid black;
-  height: 70vh;
+  height: max-content;
+  max-height: 70vh;
   width: 70vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
-  background: rgba(210, 206, 206, 0.95);
+  border: 1px solid #89CFF0; /* Sky Blue */
   position: relative;
+  padding: 10px;
+  background-color: #FFFFFF; /* White */
+  border-radius: 10px;
 }
+
 .dropDownButton {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid black;
-  background-color: rgb(89, 173, 173);
+  border: 2px solid #A8D5BA; /* Soft Mint Green */
+  border-radius: 5px;
+  background-color: #fafafa; /* Sky Blue */
+  color: rgb(34, 21, 3);
   width: max-content;
-  height: 25px;
+  height: 30px;
   margin-top: 20px;
-  padding: 3px;
+  padding: 5px;
 }
+
 .dropDownIcon {
   margin: 5px;
   padding: 0;
   height: 20px;
   width: auto;
 }
+
 .dropDownButton:hover {
   cursor: pointer;
-  background-color: rgb(84, 156, 156);
+  background-color: #36e9e9; /* Medium Teal for hover */
 }
+
 .closeDropDown {
   height: 40px;
   width: 40px;
@@ -77,25 +102,36 @@
   top: 0;
   right: 0;
 }
-.closeDropDown:hover{
-    cursor: pointer;
-}
-.categoryNames{
-    padding: 0;
-    margin: 0;
-}
-.categoryNames li{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.searchBar{
-  height: 30px;
-  width: 200px;
-  border : none;
-  outline: none;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: large;
-  margin-bottom: 20px;
 
+.closeDropDown:hover {
+  cursor: pointer;
+  background-color: #66B2B2; /* Medium Teal */
+}
+
+.categoryNames {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.categoryNames li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #A8D5BA; /* Soft Mint Green */
+  
+  height: 30px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  background-color: #F9F9F9; /* Very Light Gray */
+  color: #333333; /* Dark Charcoal */
+  border-radius: 5px;
+}
+
+.categoryNames li:hover {
+  background-color: #E0F7E0; /* Slightly tinted green for hover */
+}
+.rotate{
+  transform: rotate(180deg);
 }

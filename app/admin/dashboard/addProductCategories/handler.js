@@ -9,7 +9,7 @@ import {
   getDocs,
   deleteDoc,
   getDoc,
-  where
+  where,
 } from "firebase/firestore";
 
 export async function addCategory(categoryName) {
