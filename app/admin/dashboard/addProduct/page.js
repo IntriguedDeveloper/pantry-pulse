@@ -4,18 +4,62 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import dropDownIcon from "/public/dropdown.png";
 import crossIcon from "/public/crossicon.svg";
+import { getCategories } from "../addProductCategories/handler";
+
 export default function AddProductPage() {
   const [isVisible, setIsVisible] = useState(false);
-  const [categorySearchQuery, setCategorySearchQuery] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState([]);
+  const [rotate, setRotate] = useState(false); // State to handle rotation
+  const [isCategorySelected, setIsCategorySelected] = useState({
+    status: false,
+    categoryName: "",
+  });
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const fetchedCategories = await getCategories();
+        console.log(fetchedCategories);
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Failed to display categories");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchCategories();
+  }, []);
+
   const toggleDropdown = () => {
     setIsVisible(!isVisible);
+    setRotate(!rotate); // Trigger rotation
+    setIsCategorySelected({
+      status: false,
+      categoryName: "",
+    });
   };
-  const searchBarInputHandler = (event) => {
-    setCategorySearchQuery(event.target.value);
-    console.log(categorySearchQuery);
-  }
+
+  const handleCategorySelection = (categoryName) => {
+    setIsCategorySelected({
+      status: true,
+      categoryName: categoryName,
+    });
+    setIsVisible(false);
+    setRotate(false);
+  };
   return (
     <>
+      <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="true"
+      ></link>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Moderustic:wght@300..800&display=swap"
+        rel="stylesheet"
+      ></link>
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <form className={styles.inputForm}>
@@ -24,31 +68,46 @@ export default function AddProductPage() {
               type="text"
               className={styles.inputBox}
             ></input>
-            <div className={styles.dropDownButton} onClick={toggleDropdown}>
-              Select a category
-              <Image src={dropDownIcon} className={styles.dropDownIcon}></Image>
+            <div
+              className={styles.dropDownButton} // Add rotation class conditionally
+              onClick={toggleDropdown}
+            >
+              {isCategorySelected.status ? (
+                isCategorySelected.categoryName
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Select a Category{" "}
+                  <Image
+                    src={dropDownIcon}
+                    className={`${styles.dropDownIcon} ${
+                      rotate ? styles.rotate : ""
+                    }`}
+                    alt="dropdown"
+                  ></Image>{" "}
+                </div>
+              )}
             </div>
-
             {isVisible && (
               <div className={styles.dropDownOverlayContainer}>
                 <div className={styles.dropDownDiv}>
-                  <Image
-                    src={crossIcon}
-                    className={styles.closeDropDown}
-                    onClick={toggleDropdown}
-                  ></Image>
-                  <div className={styles.dropDownSearchBarContainer}>
-                    <input type="text" className={styles.searchBar} onInput={searchBarInputHandler}></input>
-                  </div>
                   <ul className={styles.categoryNames}>
-                    <li>Product Name</li>
-                    <li>Product Name</li>
-                    <li>Product Name</li>
-                    <li>Product Name</li>
-                    <li>Product Name</li>
-                    <li>Product Name</li>
-                    <li>Product Name</li>
-                    <li>Product Name</li>
+                    {categories.map((category, index) => (
+                      <li
+                        key={index}
+                        className={styles.category}
+                        onClick={() => {
+                          handleCategorySelection(category);
+                        }}
+                      >
+                        {category}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
