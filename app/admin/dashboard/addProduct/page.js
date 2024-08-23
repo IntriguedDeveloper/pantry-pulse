@@ -15,6 +15,7 @@ export default function AddProductPage() {
     status: false,
     categoryName: "",
   });
+  //hello 
   useEffect(() => {
     async function fetchCategories() {
       try {
