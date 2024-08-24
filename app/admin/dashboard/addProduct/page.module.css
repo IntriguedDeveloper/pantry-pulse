@@ -7,7 +7,19 @@
   justify-content: center;
   align-items: center;
   font-family: "Modeuristic", sans-serif;
-  background-color: #FFFFFF; /* White Background */
+  background-color: #ffffff; /* White Background */
+}
+
+/* Hide spinner arrows in number inputs for WebKit browsers (Chrome, Safari, Edge, Opera) */
+.numberInput::-webkit-outer-spin-button,
+.numberInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide spinner arrows in Firefox */
+.numberInput {
+  -moz-appearance: textfield;
 }
 
 .container {
@@ -19,8 +31,33 @@
   align-items: flex-start;
   justify-content: center;
   color: #333333; /* Dark Charcoal */
-  border: 1px solid #E0E0E0; /* Subtle border for the container */
+  border: 1px solid #e0e0e0; /* Subtle border for the container */
   border-radius: 10px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+@media only screen and (max-width : 670px){
+  .container{
+    height: 100vh;
+  }
+  
+}
+.container::-webkit-scrollbar {
+  width: 5px;
+  z-index: 3;
+}
+
+.container::-webkit-scrollbar-track {
+  border-radius: 2px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: rgba(225, 171, 171, 0.7);
+  border-radius: 5px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background-color: #b7a4a4;
 }
 
 .inputForm {
@@ -29,17 +66,87 @@
   justify-content: center;
   flex-direction: column;
 }
-
+.inputForm > div {
+  /*targets only direct children*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 .inputBox {
+  margin-top: 5px;
+  margin-bottom: 5px;
   height: 40px;
   width: 300px;
   font-size: medium;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-color: #fdf7f7; /* White */
   color: #333333; /* Dark Charcoal */
-  border: 2px solid #A8D5BA; /* Soft Mint Green */
+  border: 2px solid #a8d5ba; /* Soft Mint Green */
   border-radius: 5px;
   padding: 5px;
+  outline: none;
+  border: none;
+}
+.inputBox:focus {
+  box-shadow: 0.2px 0.2px 3px 3px rgba(156, 142, 142, 0.5);
+}
+.inputDescriptionBox {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 100px;
+  width: 300px;
+  font-size: medium;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #fdf7f7; /* White */
+  color: #333333; /* Dark Charcoal */
+  border: 2px solid #a8d5ba; /* Soft Mint Green */
+  border-radius: 5px;
+  padding: 5px;
+  outline: none;
+  border: none;
+  text-align: left;
+  vertical-align: top;
+  resize: none;
+}
+.inputDescriptionBox::placeholder {
+  text-align: left;
+}
+.inputDescriptionBox:focus {
+  box-shadow: 0.2px 0.2px 3px 3px rgba(156, 142, 142, 0.5);
+}
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.hiddenCheckbox {
+  opacity: 0;
+  position: absolute;
+}
+
+.customCheckbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #a8d5ba; /* Soft Mint Green */
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  background-color: #fdf7f7; /* Light background */
+}
+
+.customCheckbox:hover {
+  background-color: #e0f7e0; /* Hover effect */
+}
+
+.checkboxLabel {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 16px;
+  color: #333333;
 }
 
 .dropDownOverlayContainer {
@@ -62,10 +169,10 @@
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  border: 1px solid #89CFF0; /* Sky Blue */
+  border: 1px solid #89cff0; /* Sky Blue */
   position: relative;
   padding: 10px;
-  background-color: #FFFFFF; /* White */
+  background-color: #ffffff; /* White */
   border-radius: 10px;
 }
 
@@ -73,7 +180,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #A8D5BA; /* Soft Mint Green */
+  border: 2px solid #a8d5ba; /* Soft Mint Green */
   border-radius: 5px;
   background-color: #fafafa; /* Sky Blue */
   color: rgb(34, 21, 3);
@@ -81,6 +188,7 @@
   height: 30px;
   margin-top: 20px;
   padding: 5px;
+  font-weight: bold;
 }
 
 .dropDownIcon {
@@ -105,7 +213,7 @@
 
 .closeDropDown:hover {
   cursor: pointer;
-  background-color: #66B2B2; /* Medium Teal */
+  background-color: #66b2b2; /* Medium Teal */
 }
 
 .categoryNames {
@@ -118,20 +226,20 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  border: 1px solid #A8D5BA; /* Soft Mint Green */
-  
+  border: 1px solid #a8d5ba; /* Soft Mint Green */
+
   height: 30px;
   padding: 5px;
   display: flex;
   align-items: center;
-  background-color: #F9F9F9; /* Very Light Gray */
+  background-color: #f9f9f9; /* Very Light Gray */
   color: #333333; /* Dark Charcoal */
   border-radius: 5px;
 }
 
 .categoryNames li:hover {
-  background-color: #E0F7E0; /* Slightly tinted green for hover */
+  background-color: #e0f7e0; /* Slightly tinted green for hover */
 }
-.rotate{
+.rotate {
   transform: rotate(180deg);
 }
