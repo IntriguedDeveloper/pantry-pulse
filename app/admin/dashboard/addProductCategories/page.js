@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import deleteIcon from "/public/deleteIcon.svg";
+import deleteIcon from "/public/admin/deleteIcon.svg";
 import Image from "next/image";
 import { addCategory, getCategories, deleteCategory } from "./handler";
 import { collection, getDocs } from "firebase/firestore";
@@ -46,7 +46,7 @@ export default function Home() {
   };
   return (
     <div className={styles.container}>
-      <div className={styles.addCategory}>
+      <div className={styles.addCategoryContainer}>
         <input
           type="text"
           value={newCategory}

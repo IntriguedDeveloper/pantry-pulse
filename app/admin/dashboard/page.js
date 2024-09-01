@@ -1,9 +1,9 @@
 import styles from "./dashboard.module.css";
 import Card from "./Card";
-import addProductIcon from "/public/addProductIcon.png";
-import editProductIcon from "/public/editProductIcon.png";
-import productCategoryIcon from "/public/productCategoriesIcon.png";
-import deleteProductIcon from "/public/bin.png";
+import addProductIcon from "/public/admin/addProductIcon.png";
+import editProductIcon from "/public/admin/editProductIcon.png";
+import productCategoryIcon from "/public/admin/productCategoriesIcon.png";
+import deleteProductIcon from "/public/admin/bin.png";
 
 export default function AdminDashboard() {
   return (

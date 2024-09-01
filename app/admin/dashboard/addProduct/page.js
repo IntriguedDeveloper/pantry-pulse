@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
-import dropDownIcon from "/public/dropdown.png";
+import dropDownIcon from "/public/common/dropdown.png";
 import clsx from "clsx"; //for multiple classes
-import crossIcon from "/public/crossicon.svg";
+import crossIcon from "/public/common/crossicon.svg";
 import { getCategories } from "../addProductCategories/handler";
 //TODO : add other input fields and complete add product page frontend
-//TODO : style scrollbar
+
 export default function AddProductPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -79,8 +79,14 @@ export default function AddProductPage() {
                 type="text"
                 className={styles.inputBox}
               ></input>
-              <input placeholder="Enter brand name of product : " className={styles.inputBox}></input>
-              <input placeholder="Enter SKU code : " className={styles.inputBox}></input>
+              <input
+                placeholder="Enter brand name of product : "
+                className={styles.inputBox}
+              ></input>
+              <input
+                placeholder="Enter SKU code : "
+                className={styles.inputBox}
+              ></input>
               <textarea
                 placeholder="Enter product description : "
                 type="text"
@@ -169,8 +175,17 @@ export default function AddProductPage() {
             </div>
             <div className={styles.productSpecificationContainer}>
               <h3>Product Specifications</h3>
+              <input
+                className={clsx(styles.inputBox, styles.numberInput)}
+                placeholder="Enter weight of product (in grams) : "
+                type="number"
+                min="0"
+              ></input>
             </div>
-
+            <div className={styles.productMediaContainer}>
+              <h3>Product Media</h3>
+              <input type = "file"></input>
+            </div>
           </form>
         </div>
       </div>
