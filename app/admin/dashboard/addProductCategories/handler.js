@@ -11,7 +11,7 @@ import {
   getDoc,
   where,
 } from "firebase/firestore";
-
+//FIXME : fix css for mobile devices wherein box is overflowing
 export async function addCategory(categoryName) {
   const categoryRef = collection(db, "admin/categories/product-categories");
   await addDoc(categoryRef, { name: categoryName });

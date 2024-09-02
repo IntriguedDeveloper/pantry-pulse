@@ -12,7 +12,10 @@
 
 /* Input and button container */
 .addCategoryContainer {
+  width: max-content;
+  height: max-content;
   display: flex;
+  flex-direction: row;
   align-items: center;
   margin-bottom: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -23,12 +26,12 @@
 
 /* Input box styling */
 .inputBox {
-  padding: 12px;
+  width: 300px;
+  margin: 10px;
+  height: 40px;
   font-size: 16px;
   border: 2px solid #495869;
   border-radius: 4px;
-  margin-right: 10px;
-  width: 250px;
   transition: border 0.3s;
   outline: none;
 }
@@ -40,7 +43,8 @@
 
 /* Add button styling */
 .addButton {
-  padding: 12px 20px;
+  
+  padding: 10px 15px;
   background-color: #063c75;
   color: white;
   border: none;
@@ -108,8 +112,9 @@
 
   .inputBox {
     width: 100%;
-    margin-right: 0;
-    margin-bottom: 10px;
+  }
+  .addButton{
+    height: 60px;
   }
 
   .addCategory {

@@ -36,11 +36,10 @@
   overflow: scroll;
   overflow-x: hidden;
 }
-@media only screen and (max-width : 670px){
-  .container{
+@media only screen and (max-width: 670px) {
+  .container {
     height: 100vh;
   }
-  
 }
 .container::-webkit-scrollbar {
   width: 5px;
@@ -59,6 +58,7 @@
 .container::-webkit-scrollbar-thumb:hover {
   background-color: #b7a4a4;
 }
+
 
 .inputForm {
   display: flex;
@@ -242,4 +242,24 @@
 }
 .rotate {
   transform: rotate(180deg);
+}
+
+.productImageButton{
+  height: 200px;
+  width: 300px;
+  background-color: #cac4c4;
+  border: 3px dotted rgb(103, 86, 86);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.productImageButton:hover{
+  cursor: pointer;
+  background-color: #b1acac;
+}
+.productImageButton img{
+  height:50px;
+  width: 50px;
+  padding: 0;
+  margin: 0;
 }

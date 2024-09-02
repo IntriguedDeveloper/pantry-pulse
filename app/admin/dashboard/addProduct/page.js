@@ -6,7 +6,8 @@ import dropDownIcon from "/public/common/dropdown.png";
 import clsx from "clsx"; //for multiple classes
 import crossIcon from "/public/common/crossicon.svg";
 import { getCategories } from "../addProductCategories/handler";
-//TODO : add other input fields and complete add product page frontend
+import productImageIcon from "/public/admin/productImageIcon.png";
+//TODO : complete custom file upload button and mechanism
 
 export default function AddProductPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -14,6 +15,7 @@ export default function AddProductPage() {
   const [isLoading, setIsLoading] = useState([]);
   const [rotate, setRotate] = useState(false); // State to handle rotation
   const [isChecked, setIsChecked] = useState(false);
+  const [isImageUploaded, setImageUploadStatus] = useState(false);
   const [isCategorySelected, setIsCategorySelected] = useState({
     status: false,
     categoryName: "",
@@ -57,6 +59,9 @@ export default function AddProductPage() {
     setIsChecked(!isChecked);
   };
 
+  const handleImageUpload = () => {
+
+  };
   return (
     <>
       <link rel="preconnect" href="https://fonts.googleapis.com"></link>
@@ -184,7 +189,16 @@ export default function AddProductPage() {
             </div>
             <div className={styles.productMediaContainer}>
               <h3>Product Media</h3>
-              <input type = "file"></input>
+              {isImageUploaded ? (
+                <h1>yet to do</h1>
+              ) : (
+                <div
+                  className={styles.productImageButton}
+                  onClick={handleImageUpload}
+                >
+                  <Image src={productImageIcon}></Image>
+                </div>
+              )}
             </div>
           </form>
         </div>
