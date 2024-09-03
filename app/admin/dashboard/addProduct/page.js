@@ -16,6 +16,7 @@ export default function AddProductPage() {
   const [rotate, setRotate] = useState(false); // State to handle rotation
   const [isChecked, setIsChecked] = useState(false);
   const [isImageUploaded, setImageUploadStatus] = useState(false);
+  const [image, setImage] = useState(null);
   const [isCategorySelected, setIsCategorySelected] = useState({
     status: false,
     categoryName: "",
@@ -36,6 +37,13 @@ export default function AddProductPage() {
 
     fetchCategories();
   }, []);
+  useEffect(() => {
+    if (image && image.file) {
+      setImageUploadStatus(true);
+    } else {
+      setImageUploadStatus(false);
+    }
+  }, [image]);
 
   const toggleDropdown = () => {
     setIsVisible(!isVisible);
@@ -59,9 +67,20 @@ export default function AddProductPage() {
     setIsChecked(!isChecked);
   };
 
-  const handleImageUpload = () => {
-
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0]; // Access the first file
+    console.log(file);
+    if (file) {
+      const imageUrl = URL.createObjectURL(file); // Create a URL for the file
+      setImage({
+        file: file,
+        URL: imageUrl,
+      });
+    } else {
+      console.error("No file selected or invalid file");
+    }
   };
+
   return (
     <>
       <link rel="preconnect" href="https://fonts.googleapis.com"></link>
@@ -190,14 +209,16 @@ export default function AddProductPage() {
             <div className={styles.productMediaContainer}>
               <h3>Product Media</h3>
               {isImageUploaded ? (
-                <h1>yet to do</h1>
+                <Image src={image.URL} width={300} height={200} alt = "selected image"></Image>
               ) : (
-                <div
+                <label
                   className={styles.productImageButton}
-                  onClick={handleImageUpload}
+                  
+                  htmlFor="file-upload"
                 >
+                  <input id="file-upload" type="file" onChange={handleImageUpload}></input>
                   <Image src={productImageIcon}></Image>
-                </div>
+                </label>
               )}
             </div>
           </form>

@@ -243,7 +243,9 @@
 .rotate {
   transform: rotate(180deg);
 }
-
+.productMediaContainer img{
+  border-radius: 5px;
+}
 .productImageButton{
   height: 200px;
   width: 300px;
@@ -262,4 +264,7 @@
   width: 50px;
   padding: 0;
   margin: 0;
+}
+.productImageButton input{
+  display: none;
 }
