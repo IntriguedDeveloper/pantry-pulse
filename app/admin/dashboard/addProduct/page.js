@@ -7,7 +7,7 @@ import clsx from "clsx"; //for multiple classes
 import crossIcon from "/public/common/crossicon.svg";
 import { getCategories } from "../addProductCategories/handler";
 import productImageIcon from "/public/admin/productImageIcon.png";
-//TODO : complete custom file upload button and mechanism
+//TODO : make a grid and add media container for multiple images preferably 4
 
 export default function AddProductPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -209,14 +209,22 @@ export default function AddProductPage() {
             <div className={styles.productMediaContainer}>
               <h3>Product Media</h3>
               {isImageUploaded ? (
-                <Image src={image.URL} width={300} height={200} alt = "selected image"></Image>
+                <Image
+                  src={image.URL}
+                  width={300}
+                  height={200}
+                  alt="selected image"
+                ></Image>
               ) : (
                 <label
                   className={styles.productImageButton}
-                  
                   htmlFor="file-upload"
                 >
-                  <input id="file-upload" type="file" onChange={handleImageUpload}></input>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    onChange={handleImageUpload}
+                  ></input>
                   <Image src={productImageIcon}></Image>
                 </label>
               )}
