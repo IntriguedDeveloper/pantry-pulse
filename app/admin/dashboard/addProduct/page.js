@@ -5,6 +5,7 @@ import Image from "next/image";
 import dropDownIcon from "/public/common/dropdown.png";
 import clsx from "clsx"; //for multiple classes
 import crossIcon from "/public/common/crossicon.svg";
+import swipeArrow from "/public/admin/rightarrow.svg";
 import { getCategories } from "../addProductCategories/handler";
 import productImageIcon from "/public/admin/productImageIcon.png";
 //TODO : make a grid and add media container for multiple images preferably 4
@@ -21,6 +22,7 @@ export default function AddProductPage() {
     status: false,
     categoryName: "",
   });
+  const [swipeCount, setSwipeCount] = useState(0);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -38,7 +40,7 @@ export default function AddProductPage() {
     fetchCategories();
   }, []);
   useEffect(() => {
-    if (image && image.file) {
+    if (image) {
       setImageUploadStatus(true);
     } else {
       setImageUploadStatus(false);
@@ -68,13 +70,16 @@ export default function AddProductPage() {
   };
 
   const handleImageUpload = (event) => {
-    const file = event.target.files[0]; // Access the first file
-    console.log(file);
-    if (file) {
-      const imageUrl = URL.createObjectURL(file); // Create a URL for the file
+    const files = Array.from(event.target.files);
+    console.log(files);
+    if (files.length > 0) {
+      const fileArray = files.map((file, index) => ({
+        file,
+        URL: URL.createObjectURL(file),
+        index: index,
+      }));
       setImage({
-        file: file,
-        URL: imageUrl,
+        files: fileArray,
       });
     } else {
       console.error("No file selected or invalid file");
@@ -209,12 +214,39 @@ export default function AddProductPage() {
             <div className={styles.productMediaContainer}>
               <h3>Product Media</h3>
               {isImageUploaded ? (
-                <Image
-                  src={image.URL}
-                  width={300}
-                  height={200}
-                  alt="selected image"
-                ></Image>
+                <div className={styles.selectedImageContainer}>
+                  {image.files.map((fileObject) => {
+                    return swipeCount === fileObject.index ? (
+                      <Image
+                        src={fileObject.URL}
+                        width={300}
+                        height={200}
+                        alt="selected image"
+                      ></Image>
+                    ) : null;
+                  })}
+
+                  <Image
+                    src={swipeArrow}
+                    className={styles.swipeArrowRight}
+                    alt="arrow"
+                    onClick={() => {
+                      setSwipeCount((prevCount) =>
+                        prevCount >= image.files.length - 1 ? 0 : swipeCount + 1
+                      );
+                    }}
+                  ></Image>
+                  <Image
+                    src={swipeArrow}
+                    alt="arrow"
+                    className={styles.swipeArrowLeft}
+                    onClick={() => {
+                      setSwipeCount((prevCount) =>
+                        prevCount <= 0 ? image.files.length - 1 : swipeCount - 1
+                      );
+                    }}
+                  ></Image>
+                </div>
               ) : (
                 <label
                   className={styles.productImageButton}
@@ -224,6 +256,7 @@ export default function AddProductPage() {
                     id="file-upload"
                     type="file"
                     onChange={handleImageUpload}
+                    multiple
                   ></input>
                   <Image src={productImageIcon}></Image>
                 </label>

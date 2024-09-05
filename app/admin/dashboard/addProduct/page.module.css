@@ -268,3 +268,28 @@
 .productImageButton input{
   display: none;
 }
+.selectedImageContainer{
+  position: relative;
+}
+.swipeArrowRight{
+  margin: 5px;
+  position: absolute;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  top:40%;
+  bottom: 50%;
+}
+.swipeArrowLeft{
+  transform: rotate(180deg);
+  margin: 5px;
+  position: absolute;
+  left:0;
+  width: 30px;
+  height: 30px;
+  top:40%;
+  bottom: 50%;
+}
+.swipeArrowLeft:hover, .swipeArrowRight:hover{
+  cursor: pointer;
+}
