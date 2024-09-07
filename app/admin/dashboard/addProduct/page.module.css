@@ -293,3 +293,22 @@
 .swipeArrowLeft:hover, .swipeArrowRight:hover{
   cursor: pointer;
 }
+.submitButton{
+  background-color: rgb(24, 172, 83);
+  color: white;
+  height: 50px;
+  width: 200px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  font-weight: bold;
+  font-size: medium;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.submitButton:hover, .submitButton:active{
+  cursor:pointer;
+  height: 52px;
+  background-color: rgb(23, 154, 75);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

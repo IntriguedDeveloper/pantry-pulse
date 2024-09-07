@@ -8,8 +8,9 @@ import crossIcon from "/public/common/crossicon.svg";
 import swipeArrow from "/public/admin/rightarrow.svg";
 import { getCategories } from "../addProductCategories/handler";
 import productImageIcon from "/public/admin/productImageIcon.png";
-//TODO : make a grid and add media container for multiple images preferably 4
 
+//TODO : add product details to firestore
+//TODO : add reference to product detail document of product image in cloud storage
 export default function AddProductPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -23,7 +24,18 @@ export default function AddProductPage() {
     categoryName: "",
   });
   const [swipeCount, setSwipeCount] = useState(0);
-
+  const [productDetails, setProductDetails] = useState({
+    productName: "",
+    brandName: "",
+    SKUCode: "",
+    productDescription: "",
+    selectedCategory: "",
+    productPrice: "",
+    discountPercentage: "",
+    stockQuantity: "",
+    isProductAvailableForSale: false,
+    productWeight: "",
+  });
   useEffect(() => {
     async function fetchCategories() {
       try {
@@ -85,6 +97,15 @@ export default function AddProductPage() {
       console.error("No file selected or invalid file");
     }
   };
+  const handleChange = (e) => {
+    const { name, value, type } = e.target;
+    setProductDetails({ ...productDetails, [name]: value });
+    console.log(productDetails);
+  };
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    console.log('submitted')
+  };
 
   return (
     <>
@@ -107,19 +128,27 @@ export default function AddProductPage() {
                 placeholder="Enter name of product"
                 type="text"
                 className={styles.inputBox}
+                name="productName"
+                onChange={handleChange}
               ></input>
               <input
                 placeholder="Enter brand name of product : "
                 className={styles.inputBox}
+                name="brandName"
+                onChange={handleChange}
               ></input>
               <input
                 placeholder="Enter SKU code : "
                 className={styles.inputBox}
+                name="SKUCode"
+                onChange={handleChange}
               ></input>
               <textarea
                 placeholder="Enter product description : "
                 type="text"
                 className={styles.inputDescriptionBox}
+                name="productDescription"
+                onChange={handleChange}
               ></textarea>
               <div
                 className={styles.dropDownButton} // Add rotation class conditionally
@@ -173,13 +202,17 @@ export default function AddProductPage() {
                 placeholder="Enter the price in Rs. : "
                 className={clsx(styles.inputBox, styles.numberInput)}
                 min="0"
-              ></input>{" "}
+                name="productPrice"
+                onChange={handleChange}
+              ></input>
               {/*use clsx to apply multiple classnames*/}
               <input
                 type="number"
                 placeholder="Enter discount percentage : "
                 className={clsx(styles.inputBox, styles.numberInput)}
                 min="0"
+                name="discountPercentage"
+                onChange={handleChange}
               ></input>
             </div>
             <div className={styles.inventoryDetailsContainer}>
@@ -188,6 +221,8 @@ export default function AddProductPage() {
                 type="number"
                 className={clsx(styles.inputBox, styles.numberInput)}
                 placeholder="Enter current stock quantity : "
+                name="stockQuantity"
+                onChange={handleChange}
               ></input>
               <div className={styles.checkboxContainer} onClick={handleToggle}>
                 <span
@@ -209,6 +244,8 @@ export default function AddProductPage() {
                 placeholder="Enter weight of product (in grams) : "
                 type="number"
                 min="0"
+                name="productWeight"
+                onChange={handleChange}
               ></input>
             </div>
             <div className={styles.productMediaContainer}>
@@ -262,6 +299,12 @@ export default function AddProductPage() {
                 </label>
               )}
             </div>
+            <input
+              type="submit"
+              className={styles.submitButton}
+              value="Add Product"
+              onClick={handleFormSubmit}
+            />
           </form>
         </div>
       </div>
