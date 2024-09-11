@@ -1,3 +1,4 @@
+"use server";
 import { db } from "@/firebase/clientApp";
 import {
   setDoc,
@@ -22,7 +23,7 @@ export async function getCategories() {
   );
   const fetchedCategories = [];
   querySnapshot.forEach((doc) => {
-    console.log(doc.data().name);
+    
     fetchedCategories.push(doc.data().name);
   });
   return fetchedCategories;
