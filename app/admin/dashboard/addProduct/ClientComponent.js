@@ -8,11 +8,11 @@ import crossIcon from "/public/common/crossicon.svg";
 import swipeArrow from "/public/admin/rightarrow.svg";
 import { getCategories } from "../addProductCategories/handler";
 import productImageIcon from "/public/admin/productImageIcon.png";
-import { storage } from "@/firebase/clientApp";
+import { db, storage } from "@/firebase/clientApp";
 import { ref, uploadBytes } from "firebase/storage";
-//TODO : add product details to firestore
-//TODO : add reference to product detail document of product image in cloud storage
-export default function ClientComponent({categories : initialCategories}) {
+import { collection, setDoc, addDoc } from "firebase/firestore";
+
+export default function ClientComponent({ categories: initialCategories }) {
   const [isVisible, setIsVisible] = useState(false);
   const [categories, setCategories] = useState(initialCategories);
   const [isLoading, setIsLoading] = useState([]);
@@ -21,9 +21,9 @@ export default function ClientComponent({categories : initialCategories}) {
   const [isImageUploaded, setImageUploadStatus] = useState(false);
   const [image, setImage] = useState(null);
   useEffect(() => {
-    console.log(initialCategories)
-    console.log(categories)
-  },[])
+    console.log(initialCategories);
+    console.log(categories);
+  }, []);
   const [isCategorySelected, setIsCategorySelected] = useState({
     status: false,
     categoryName: "",
@@ -41,7 +41,7 @@ export default function ClientComponent({categories : initialCategories}) {
     isProductAvailableForSale: false,
     productWeight: "",
   });
-  
+
   useEffect(() => {
     if (image) {
       setImageUploadStatus(true);
@@ -64,6 +64,7 @@ export default function ClientComponent({categories : initialCategories}) {
       status: true,
       categoryName: categoryName,
     });
+    setProductDetails({ ...productDetails, selectedCategory: categoryName });
     setIsVisible(false);
     setRotate(false);
   };
@@ -93,15 +94,24 @@ export default function ClientComponent({categories : initialCategories}) {
     setProductDetails({ ...productDetails, [name]: value });
     console.log(productDetails);
   };
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const storageRef =  ref(storage, 'product-images')
-    image.files.map((fileObject) => {
-      uploadBytes(storageRef, fileObject.file).then((snapshot)=>{
-        console.log("Uploaded File")
-      })
-    })
-    console.log("submitted");
+    const collectionRef = collection(db, "admin", "product-doc", "products");
+    const docData = productDetails;
+    const docRef = await addDoc(collectionRef, productDetails);
+    const metadata = {
+      customMetadata: {
+        docRefID: docRef.id,
+      },
+    };
+    image.files.map(async (fileObject, index) => {
+      const imageCollectionRef = ref(
+        storage,
+        `products/${isCategorySelected.categoryName}/${docRef.id}/${index}`
+      );
+      await uploadBytes(imageCollectionRef, fileObject.file, metadata);
+      console.log("Uploaded Image");
+    });
   };
 
   return (
@@ -249,13 +259,14 @@ export default function ClientComponent({categories : initialCategories}) {
               <h3>Product Media</h3>
               {isImageUploaded ? (
                 <div className={styles.selectedImageContainer}>
-                  {image.files.map((fileObject) => {
+                  {image.files.map((fileObject, index) => {
                     return swipeCount === fileObject.index ? (
                       <Image
                         src={fileObject.URL}
                         width={300}
                         height={200}
                         alt="selected image"
+                        key={index}
                       ></Image>
                     ) : null;
                   })}
