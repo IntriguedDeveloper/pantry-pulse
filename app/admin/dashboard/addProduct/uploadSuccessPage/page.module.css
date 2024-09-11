@@ -1,0 +1,55 @@
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ffffff; /* White Background */
+}
+
+.successPage {
+  text-align: center;
+  background-color: #f6e2e2; /* Very Light Gray for contrast */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.successMessage {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(24, 172, 83); /* Success green */
+  margin-bottom: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.homeButton,
+.addProductButton {
+  background-color: rgb(24, 172, 83); /* Success green */
+  color: white;
+  height: 50px;
+  width: 200px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  font-weight: bold;
+  font-size: medium;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.homeButton:hover,
+.addProductButton:hover {
+  background-color: rgb(23, 154, 75); /* Darker green for hover effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

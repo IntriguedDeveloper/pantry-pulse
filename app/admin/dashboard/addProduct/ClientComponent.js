@@ -3,27 +3,22 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
 import dropDownIcon from "/public/common/dropdown.png";
-import clsx from "clsx"; //for multiple classes
-import crossIcon from "/public/common/crossicon.svg";
+import clsx from "clsx";
 import swipeArrow from "/public/admin/rightarrow.svg";
-import { getCategories } from "../addProductCategories/handler";
 import productImageIcon from "/public/admin/productImageIcon.png";
 import { db, storage } from "@/firebase/clientApp";
 import { ref, uploadBytes } from "firebase/storage";
-import { collection, setDoc, addDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
 export default function ClientComponent({ categories: initialCategories }) {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [categories, setCategories] = useState(initialCategories);
-  const [isLoading, setIsLoading] = useState([]);
-  const [rotate, setRotate] = useState(false); // State to handle rotation
+  const [rotate, setRotate] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isImageUploaded, setImageUploadStatus] = useState(false);
   const [image, setImage] = useState(null);
-  useEffect(() => {
-    console.log(initialCategories);
-    console.log(categories);
-  }, []);
   const [isCategorySelected, setIsCategorySelected] = useState({
     status: false,
     categoryName: "",
@@ -52,7 +47,7 @@ export default function ClientComponent({ categories: initialCategories }) {
 
   const toggleDropdown = () => {
     setIsVisible(!isVisible);
-    setRotate(!rotate); // Trigger rotation
+    setRotate(!rotate);
     setIsCategorySelected({
       status: false,
       categoryName: "",
@@ -75,7 +70,6 @@ export default function ClientComponent({ categories: initialCategories }) {
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
-    console.log(files);
     if (files.length > 0) {
       const fileArray = files.map((file, index) => ({
         file,
@@ -89,29 +83,40 @@ export default function ClientComponent({ categories: initialCategories }) {
       console.error("No file selected or invalid file");
     }
   };
+
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
+    const { name, value } = e.target;
     setProductDetails({ ...productDetails, [name]: value });
-    console.log(productDetails);
   };
+
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
+
     const collectionRef = collection(db, "admin", "product-doc", "products");
-    const docData = productDetails;
     const docRef = await addDoc(collectionRef, productDetails);
     const metadata = {
       customMetadata: {
         docRefID: docRef.id,
       },
     };
-    image.files.map(async (fileObject, index) => {
-      const imageCollectionRef = ref(
-        storage,
-        `products/${isCategorySelected.categoryName}/${docRef.id}/${index}`
-      );
-      await uploadBytes(imageCollectionRef, fileObject.file, metadata);
-      console.log("Uploaded Image");
-    });
+
+    if (image != null) {
+      image.files.map(async (fileObject, index) => {
+        const imageCollectionRef = ref(
+          storage,
+          `products/${isCategorySelected.categoryName}/${docRef.id}/${index}`
+        );
+        await uploadBytes(imageCollectionRef, fileObject.file, metadata)
+          .then(() => {
+            router.push("./addProduct/uploadSuccessPage");
+          })
+          .catch((error) => {
+            alert("Error Uploading Images", error);
+          });
+      });
+    } else {
+      alert("Please add an image");
+    }
   };
 
   return (
@@ -128,7 +133,7 @@ export default function ClientComponent({ categories: initialCategories }) {
       ></link>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <form className={styles.inputForm}>
+          <form className={styles.inputForm} onSubmit={handleFormSubmit}>
             <div className={styles.basicProductInfoContainer}>
               <h3>Basic Product Info</h3>
               <input
@@ -137,28 +142,32 @@ export default function ClientComponent({ categories: initialCategories }) {
                 className={styles.inputBox}
                 name="productName"
                 onChange={handleChange}
-              ></input>
+                required
+              />
               <input
                 placeholder="Enter brand name of product : "
                 className={styles.inputBox}
                 name="brandName"
                 onChange={handleChange}
-              ></input>
+                required
+              />
               <input
                 placeholder="Enter SKU code : "
                 className={styles.inputBox}
                 name="SKUCode"
                 onChange={handleChange}
-              ></input>
+                required
+              />
               <textarea
                 placeholder="Enter product description : "
                 type="text"
                 className={styles.inputDescriptionBox}
                 name="productDescription"
                 onChange={handleChange}
-              ></textarea>
+                required
+              />
               <div
-                className={styles.dropDownButton} // Add rotation class conditionally
+                className={styles.dropDownButton}
                 onClick={toggleDropdown}
               >
                 {isCategorySelected.status ? (
@@ -178,7 +187,7 @@ export default function ClientComponent({ categories: initialCategories }) {
                         rotate ? styles.rotate : ""
                       }`}
                       alt="dropdown"
-                    ></Image>{" "}
+                    />{" "}
                   </div>
                 )}
               </div>
@@ -211,8 +220,8 @@ export default function ClientComponent({ categories: initialCategories }) {
                 min="0"
                 name="productPrice"
                 onChange={handleChange}
-              ></input>
-              {/*use clsx to apply multiple classnames*/}
+                required
+              />
               <input
                 type="number"
                 placeholder="Enter discount percentage : "
@@ -220,7 +229,8 @@ export default function ClientComponent({ categories: initialCategories }) {
                 min="0"
                 name="discountPercentage"
                 onChange={handleChange}
-              ></input>
+                required
+              />
             </div>
             <div className={styles.inventoryDetailsContainer}>
               <h3>Inventory Details</h3>
@@ -230,7 +240,8 @@ export default function ClientComponent({ categories: initialCategories }) {
                 placeholder="Enter current stock quantity : "
                 name="stockQuantity"
                 onChange={handleChange}
-              ></input>
+                required
+              />
               <div className={styles.checkboxContainer} onClick={handleToggle}>
                 <span
                   className={`${styles.customCheckbox} ${
@@ -253,7 +264,8 @@ export default function ClientComponent({ categories: initialCategories }) {
                 min="0"
                 name="productWeight"
                 onChange={handleChange}
-              ></input>
+                required
+              />
             </div>
             <div className={styles.productMediaContainer}>
               <h3>Product Media</h3>
@@ -267,10 +279,9 @@ export default function ClientComponent({ categories: initialCategories }) {
                         height={200}
                         alt="selected image"
                         key={index}
-                      ></Image>
+                      />
                     ) : null;
                   })}
-
                   <Image
                     src={swipeArrow}
                     className={styles.swipeArrowRight}
@@ -280,7 +291,7 @@ export default function ClientComponent({ categories: initialCategories }) {
                         prevCount >= image.files.length - 1 ? 0 : swipeCount + 1
                       );
                     }}
-                  ></Image>
+                  />
                   <Image
                     src={swipeArrow}
                     alt="arrow"
@@ -290,7 +301,7 @@ export default function ClientComponent({ categories: initialCategories }) {
                         prevCount <= 0 ? image.files.length - 1 : swipeCount - 1
                       );
                     }}
-                  ></Image>
+                  />
                 </div>
               ) : (
                 <label
@@ -303,17 +314,18 @@ export default function ClientComponent({ categories: initialCategories }) {
                     onChange={handleImageUpload}
                     multiple
                     accept="image/jpeg,image/png, image/jpg"
-                  ></input>
-                  <Image src={productImageIcon}></Image>
+                    required
+                  />
+                  <Image src={productImageIcon} />
                 </label>
               )}
             </div>
-            <input
+            <button
               type="submit"
               className={styles.submitButton}
-              value="Add Product"
-              onClick={handleFormSubmit}
-            />
+            >
+              Add Product
+            </button>
           </form>
         </div>
       </div>
