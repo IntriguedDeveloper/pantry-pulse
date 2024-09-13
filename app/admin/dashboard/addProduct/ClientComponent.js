@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 
 export default function ClientComponent({ categories: initialCategories }) {
   const router = useRouter();
+
   const [isVisible, setIsVisible] = useState(false);
   const [categories, setCategories] = useState(initialCategories);
   const [rotate, setRotate] = useState(false);
@@ -66,6 +67,10 @@ export default function ClientComponent({ categories: initialCategories }) {
 
   const handleToggle = () => {
     setIsChecked(!isChecked);
+    setProductDetails({
+      ...productDetails,
+      isProductAvailableForSale: !isChecked,
+    });
   };
 
   const handleImageUpload = (event) => {
@@ -166,10 +171,7 @@ export default function ClientComponent({ categories: initialCategories }) {
                 onChange={handleChange}
                 required
               />
-              <div
-                className={styles.dropDownButton}
-                onClick={toggleDropdown}
-              >
+              <div className={styles.dropDownButton} onClick={toggleDropdown}>
                 {isCategorySelected.status ? (
                   "Selected Category : " + isCategorySelected.categoryName
                 ) : (
@@ -320,10 +322,7 @@ export default function ClientComponent({ categories: initialCategories }) {
                 </label>
               )}
             </div>
-            <button
-              type="submit"
-              className={styles.submitButton}
-            >
+            <button type="submit" className={styles.submitButton}>
               Add Product
             </button>
           </form>
