@@ -4,7 +4,7 @@ import addProductIcon from "/public/admin/addProductIcon.png";
 import editProductIcon from "/public/admin/editProductIcon.png";
 import productCategoryIcon from "/public/admin/productCategoriesIcon.png";
 import deleteProductIcon from "/public/admin/bin.png";
-
+//TODO : create page to manage existing products
 export default function AdminDashboard() {
   return (
     <div>
@@ -15,12 +15,13 @@ export default function AdminDashboard() {
           image={addProductIcon}
           routePath={"./dashboard/addProduct"}
         ></Card>
-        <Card title={"Edit Existing Products"} image={editProductIcon}></Card>
+        <Card title={"Manage Existing Products"} image={editProductIcon}></Card>
         <Card
-          title={"Make new product category"}
+          title={"Manage Categories"}
           image={productCategoryIcon}
+          routePath={"./dashboard/addProductCategories"}
         ></Card>
-        <Card title={"Delete Products"} image={deleteProductIcon}></Card>
+        
       </div>
     </div>
   );
