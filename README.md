@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Pantry Pulse
+
+### Your Local Grocery Shopping & Delivery Solution
+
+Pantry Pulse is a web application designed to make grocery shopping from local stores easier. Users can browse, order, and get groceries delivered to their doorstep. It’s built with Next.js, Firebase, and a clean and user-friendly UI.
+
+## Features
+- **Localized Shopping**: Shop from nearby local grocery stores.
+- **Product Listings**: Browse detailed product descriptions and images.
+- **Easy Delivery**: Quick delivery to your location from trusted local suppliers.
+- **Secure User Authentication**: Sign in securely with Firebase Authentication.
+- **Real-time Data**: Firestore-powered dynamic updates for products and orders.
+- **Cloud Storage Integration**: Product images are stored efficiently using Firebase Cloud Storage.
+- **Mobile Responsive**: Seamless experience across desktop and mobile devices.
+- **Localization**: Multi-language support for better accessibility.
+
+## Tech Stack
+
+- **Frontend**: [Next.js](https://nextjs.org/)
+- **Backend**: [Firebase Firestore](https://firebase.google.com/products/firestore)
+- **Authentication**: [Firebase Authentication](https://firebase.google.com/products/auth)
+- **Cloud Storage**: [Firebase Cloud Storage](https://firebase.google.com/products/storage)
+- **Styling**: CSS Modules with a custom color scheme using soft mint green, sky blue, medium teal, and very light gray.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+To run this project, you will need:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js installed
+- A Firebase project set up (Firestore and Storage)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/pantry-pulse.git
+    cd pantry-pulse
+    ```
 
-## Learn More
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+3. Set up your Firebase configuration:
+    - Create a `.env.local` file and add your Firebase configuration:
+    ```env
+    NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+    NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Run the development server:
+    ```bash
+    npm run dev
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+5. Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-## Deploy on Vercel
+## Firebase Integration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Firestore**: Store product details, user orders, and other dynamic content.
+- **Cloud Storage**: Store and manage images for products.
+- **Authentication**: Secure sign-in and user management using Firebase Authentication.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contributing
+
+Feel free to fork the project, submit pull requests, or file issues for features or bugs.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
