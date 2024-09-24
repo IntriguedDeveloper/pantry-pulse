@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ReactNode } from "react"; // Import ReactNode for typing children
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -8,7 +9,12 @@ export const metadata = {
   description: "By Ankit",
 };
 
-export default function RootLayout({ children }) {
+// Define the props type with strict typing
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
     <html lang="en">
       <head>
@@ -16,7 +22,7 @@ export default function RootLayout({ children }) {
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
-          crossOrigin = "true"
+          crossOrigin="anonymous"
         ></link>
         <link
           href="https://fonts.googleapis.com/css2?family=Sunshiney&display=swap"
@@ -26,7 +32,7 @@ export default function RootLayout({ children }) {
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
-          crossOrigin = "true"
+          crossOrigin="anonymous"
         ></link>
         <link
           href="https://fonts.googleapis.com/css2?family=Truculenta:opsz,wght@12..72,100..900&display=swap"

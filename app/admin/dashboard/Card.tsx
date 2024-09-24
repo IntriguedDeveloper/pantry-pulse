@@ -2,8 +2,16 @@
 import styles from "./cardStyles.module.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-export default function Card({ title, image, routePath }) {
+import { StaticImageData } from "next/image";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+type CardType = {
+  title: string;
+  image: StaticImageData | string | StaticImport;
+  routePath: string;
+};
+export default function Card({ title, image, routePath }: CardType) {
   const router = useRouter();
+
   return (
     <div
       className={styles.container}

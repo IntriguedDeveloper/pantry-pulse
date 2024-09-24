@@ -13,28 +13,27 @@ import {
   where,
 } from "firebase/firestore";
 
-export async function addCategory(categoryName) {
+export async function addCategory(categoryName: string) {
   const categoryRef = collection(db, "admin/categories/product-categories");
   await addDoc(categoryRef, { name: categoryName });
 }
-export async function getCategories() {
+export async function getCategories(): Promise<String[]> {
   const querySnapshot = await getDocs(
     collection(db, "admin", "categories", "product-categories")
   );
-  const fetchedCategories = [];
+  const fetchedCategories: string[] = [];
   querySnapshot.forEach((doc) => {
-    
     fetchedCategories.push(doc.data().name);
   });
   return fetchedCategories;
 }
-export async function deleteCategory(categoryName) {
+export async function deleteCategory(categoryName: string) {
   const q = query(
     collection(db, "admin/categories/product-categories"),
     where("name", "==", categoryName)
   );
   const querySnapshot = await getDocs(q);
-  let docID;
+  let docID: string = "";
   querySnapshot.forEach((doc) => {
     docID = doc.id;
   });

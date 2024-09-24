@@ -3,6 +3,6 @@ import ClientComponent from "./ClientComponent";
 
 
 export default async function Home() {
-  const categories = await getCategories(); 
+  const categories:string[] = await getCategories(); 
   return <ClientComponent categories={categories} />;
 }

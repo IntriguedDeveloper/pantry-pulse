@@ -1,4 +1,5 @@
 "use client";
+import React, { ChangeEvent, FormEvent, MouseEvent } from "react";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
@@ -10,91 +11,120 @@ import { db, storage } from "@/firebase/clientApp";
 import { ref, uploadBytes } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+//TODO : review code
+type FileObject = {
+  file: File;
+  URL: string;
+  index: number;
+};
 
-export default function ClientComponent({ categories: initialCategories }) {
+type ImageState = {
+  files: FileObject[];
+} | null;
+
+type CategorySelection = {
+  status: boolean;
+  categoryName: string;
+};
+
+type ProductDetails = {
+  productName: string;
+  brandName: string;
+  SKUCode: string;
+  productDescription: string;
+  selectedCategory: string;
+  productPrice:  number
+  discountPercentage: number;
+  stockQuantity: number;
+  isProductAvailableForSale: boolean;
+  productWeight: number;
+};
+
+type ClientProps = {
+  categories: string[];
+};
+
+export default function ClientComponent({ categories: initialCategories }: ClientProps) {
   const router = useRouter();
 
-  const [isVisible, setIsVisible] = useState(false);
-  const [categories, setCategories] = useState(initialCategories);
-  const [rotate, setRotate] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [isImageUploaded, setImageUploadStatus] = useState(false);
-  const [image, setImage] = useState(null);
-  const [isCategorySelected, setIsCategorySelected] = useState({
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [categories, setCategories] = useState<string[]>(initialCategories);
+  const [rotate, setRotate] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isImageUploaded, setImageUploadStatus] = useState<boolean>(false);
+  const [image, setImage] = useState<ImageState>(null);
+  const [isCategorySelected, setIsCategorySelected] = useState<CategorySelection>({
     status: false,
     categoryName: "",
   });
-  const [swipeCount, setSwipeCount] = useState(0);
-  const [productDetails, setProductDetails] = useState({
+  const [swipeCount, setSwipeCount] = useState<number>(0);
+  const [productDetails, setProductDetails] = useState<ProductDetails>({
     productName: "",
     brandName: "",
     SKUCode: "",
     productDescription: "",
     selectedCategory: "",
-    productPrice: "",
-    discountPercentage: "",
-    stockQuantity: "",
+    productPrice: 0,
+    discountPercentage: 0,
+    stockQuantity: 0,
     isProductAvailableForSale: false,
-    productWeight: "",
+    productWeight: 0,
   });
 
   useEffect(() => {
-    if (image) {
-      setImageUploadStatus(true);
-    } else {
-      setImageUploadStatus(false);
-    }
+    setImageUploadStatus(image !== null);
   }, [image]);
 
   const toggleDropdown = () => {
-    setIsVisible(!isVisible);
-    setRotate(!rotate);
+    setIsVisible(prev => !prev);
+    setRotate(prev => !prev);
     setIsCategorySelected({
       status: false,
       categoryName: "",
     });
   };
 
-  const handleCategorySelection = (categoryName) => {
+  const handleCategorySelection = (categoryName: string) => {
     setIsCategorySelected({
       status: true,
       categoryName: categoryName,
     });
-    setProductDetails({ ...productDetails, selectedCategory: categoryName });
+    setProductDetails(prev => ({
+      ...prev,
+      selectedCategory: categoryName,
+    }));
     setIsVisible(false);
     setRotate(false);
   };
 
   const handleToggle = () => {
-    setIsChecked(!isChecked);
-    setProductDetails({
-      ...productDetails,
+    setIsChecked(prev => !prev);
+    setProductDetails(prev => ({
+      ...prev,
       isProductAvailableForSale: !isChecked,
-    });
+    }));
   };
 
-  const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files);
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files ? Array.from(event.target.files) : [];
     if (files.length > 0) {
-      const fileArray = files.map((file, index) => ({
+      const fileArray: FileObject[] = files.map((file, index) => ({
         file,
         URL: URL.createObjectURL(file),
         index: index,
       }));
-      setImage({
-        files: fileArray,
-      });
+      setImage({ files: fileArray });
     } else {
       console.error("No file selected or invalid file");
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setProductDetails({ ...productDetails, [name]: value });
+    setProductDetails(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent default form submission
 
     const collectionRef = collection(db, "admin", "product-doc", "products");
@@ -105,20 +135,20 @@ export default function ClientComponent({ categories: initialCategories }) {
       },
     };
 
-    if (image != null) {
-      image.files.map(async (fileObject, index) => {
+    if (image) {
+      for (const fileObject of image.files) {
         const imageCollectionRef = ref(
           storage,
-          `products/${isCategorySelected.categoryName}/${docRef.id}/${index}`
+          `products/${isCategorySelected.categoryName}/${docRef.id}/${fileObject.index}`
         );
-        await uploadBytes(imageCollectionRef, fileObject.file, metadata)
-          .then(() => {
-            router.push("./addProduct/uploadSuccessPage");
-          })
-          .catch((error) => {
-            alert("Error Uploading Images", error);
-          });
-      });
+        try {
+          await uploadBytes(imageCollectionRef, fileObject.file, metadata);
+        } catch (error) {
+          alert(`Error Uploading Images: ${error}`);
+          return;
+        }
+      }
+      router.push("./addProduct/uploadSuccessPage");
     } else {
       alert("Please add an image");
     }
@@ -165,7 +195,6 @@ export default function ClientComponent({ categories: initialCategories }) {
               />
               <textarea
                 placeholder="Enter product description : "
-                type="text"
                 className={styles.inputDescriptionBox}
                 name="productDescription"
                 onChange={handleChange}
@@ -189,7 +218,7 @@ export default function ClientComponent({ categories: initialCategories }) {
                         rotate ? styles.rotate : ""
                       }`}
                       alt="dropdown"
-                    />{" "}
+                    />
                   </div>
                 )}
               </div>
@@ -201,9 +230,7 @@ export default function ClientComponent({ categories: initialCategories }) {
                         <li
                           key={index}
                           className={styles.category}
-                          onClick={() => {
-                            handleCategorySelection(category);
-                          }}
+                          onClick={() => handleCategorySelection(category)}
                         >
                           {category}
                         </li>
@@ -273,8 +300,8 @@ export default function ClientComponent({ categories: initialCategories }) {
               <h3>Product Media</h3>
               {isImageUploaded ? (
                 <div className={styles.selectedImageContainer}>
-                  {image.files.map((fileObject, index) => {
-                    return swipeCount === fileObject.index ? (
+                  {image?.files.map((fileObject, index) => (
+                    swipeCount === fileObject.index ? (
                       <Image
                         src={fileObject.URL}
                         width={300}
@@ -282,15 +309,15 @@ export default function ClientComponent({ categories: initialCategories }) {
                         alt="selected image"
                         key={index}
                       />
-                    ) : null;
-                  })}
+                    ) : null
+                  ))}
                   <Image
                     src={swipeArrow}
                     className={styles.swipeArrowRight}
                     alt="arrow"
                     onClick={() => {
-                      setSwipeCount((prevCount) =>
-                        prevCount >= image.files.length - 1 ? 0 : swipeCount + 1
+                      setSwipeCount(prevCount =>
+                        prevCount >= (image?.files.length ?? 0) - 1 ? 0 : swipeCount + 1
                       );
                     }}
                   />
@@ -299,17 +326,14 @@ export default function ClientComponent({ categories: initialCategories }) {
                     alt="arrow"
                     className={styles.swipeArrowLeft}
                     onClick={() => {
-                      setSwipeCount((prevCount) =>
-                        prevCount <= 0 ? image.files.length - 1 : swipeCount - 1
+                      setSwipeCount(prevCount =>
+                        prevCount <= 0 ? (image?.files.length ?? 0) - 1 : swipeCount - 1
                       );
                     }}
                   />
                 </div>
               ) : (
-                <label
-                  className={styles.productImageButton}
-                  htmlFor="file-upload"
-                >
+                <label className={styles.productImageButton} htmlFor="file-upload">
                   <input
                     id="file-upload"
                     type="file"
@@ -318,7 +342,7 @@ export default function ClientComponent({ categories: initialCategories }) {
                     accept="image/jpeg,image/png, image/jpg"
                     required
                   />
-                  <Image src={productImageIcon} />
+                  <Image src={productImageIcon} alt="Product Image Icon" />
                 </label>
               )}
             </div>

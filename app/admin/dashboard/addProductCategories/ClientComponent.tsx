@@ -1,33 +1,40 @@
-"use client"; 
+"use client";
 import { useState } from "react";
-import { addCategory, deleteCategory } from "./handler"; 
+import { addCategory, deleteCategory } from "./handler";
 import Image from "next/image";
 import deleteIcon from "/public/admin/deleteIcon.svg";
 import styles from "./page.module.css";
-
-export default function ClientComponent({ categories: initialCategories }) {
+type categoryProp = {
+  categories: string[];
+};
+export default function ClientComponent({
+  categories: initialCategories,
+}: categoryProp) {
   const [categories, setCategories] = useState(initialCategories);
   const [newCategory, setNewCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewCategory(event.target.value);
   };
 
   const handleAddCategory = async () => {
     if (newCategory.trim() !== "") {
       setIsLoading(true);
-      await addCategory(newCategory); 
-      setCategories([...categories, newCategory]); 
-      setNewCategory(""); 
+      await addCategory(newCategory);
+      setCategories([...categories, newCategory]);
+      setNewCategory("");
       setIsLoading(false);
     }
   };
 
-  const handleCategoryDeletion = async (categoryName, index) => {
+  const handleCategoryDeletion = async (
+    categoryName: string,
+    index: number
+  ) => {
     setIsLoading(true);
-    await deleteCategory(categoryName); // Delete category from Firebase
-    setCategories(categories.filter((_, i) => i !== index)); // Update local state
+    await deleteCategory(categoryName);
+    setCategories(categories.filter((_, i) => i !== index));
     setIsLoading(false);
   };
 
