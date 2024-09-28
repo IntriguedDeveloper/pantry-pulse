@@ -1,12 +1,12 @@
-import styles from "./page.module.css";
-export default function ManageProductPage() {
+import ManageProducts from "./pageComponents/ManageProducts";
+import { db } from "@/firebase/clientApp";
+import { getCategories } from "../addProductCategories/handler";
+export default async function ManageProductServer() {
+  const categoryArray = await getCategories();
   return (
     <>
-    <div className={styles.wrapper}>
-        <div className={styles.container}>
-          
-        </div>
-      </div>
+      <ManageProducts categoryArray={categoryArray}></ManageProducts>
     </>
   );
 }
+

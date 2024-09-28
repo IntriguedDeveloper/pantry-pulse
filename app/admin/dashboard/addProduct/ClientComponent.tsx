@@ -27,7 +27,7 @@ type CategorySelection = {
   categoryName: string;
 };
 
-type ProductDetails = {
+export type ProductDetails = {
   productName: string;
   brandName: string;
   SKUCode: string;
@@ -38,17 +38,18 @@ type ProductDetails = {
   stockQuantity: number;
   isProductAvailableForSale: boolean;
   productWeight: number;
+  productImage ?: any;
 };
 
 type ClientProps = {
-  categories: string[];
+  categories: String[];
 };
 
 export default function ClientComponent({ categories: initialCategories }: ClientProps) {
   const router = useRouter();
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [categories, setCategories] = useState<string[]>(initialCategories);
+  const [categories, setCategories] = useState<String[]>(initialCategories);
   const [rotate, setRotate] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [isImageUploaded, setImageUploadStatus] = useState<boolean>(false);

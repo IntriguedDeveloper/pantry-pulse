@@ -1,0 +1,22 @@
+.wrapper {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+}
+.upperNav {
+  height: 50px;
+  width: inherit;
+  background-color: rgba(128, 128, 128, 0.4);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+.upperNav h2 {
+  margin: 0;
+  padding: 0;
+}
