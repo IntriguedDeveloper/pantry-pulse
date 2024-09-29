@@ -12,7 +12,7 @@
   "dependencies": {
     "clsx": "^2.1.1",
     "eslint-config-next": "^14.2.5",
-    "express": "^4.19.2",
+    "express": "^4.21.0",
     "firebase": "^10.9.0",
     "firebase-admin": "^12.0.0",
     "ikonate": "^1.1.1",
