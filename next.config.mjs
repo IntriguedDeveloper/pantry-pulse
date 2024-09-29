@@ -6,7 +6,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "firebasestorage.googleapis.com",
         port: "",
-        pathname: "/v0/b/pantrypulse-27c70.appspot.com/o/**", // This matches Firebase Storage URLs
+        pathname: "/v0/b/pantrypulse-27c70.appspot.com/o/**", 
       },
     ],
   },

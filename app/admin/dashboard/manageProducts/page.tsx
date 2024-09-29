@@ -1,6 +1,7 @@
 import ManageProducts from "./pageComponents/ManageProducts";
 import { db } from "@/firebase/clientApp";
 import { getCategories } from "../addProductCategories/handler";
+import React from "react";
 export default async function ManageProductServer() {
   const categoryArray = await getCategories();
   return (
@@ -9,4 +10,5 @@ export default async function ManageProductServer() {
     </>
   );
 }
+
 

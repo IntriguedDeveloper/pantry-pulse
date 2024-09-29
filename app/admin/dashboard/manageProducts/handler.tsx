@@ -9,14 +9,11 @@ import {
 import { db, storage } from "@/firebase/clientApp";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { ProductDetails } from "../addProduct/ClientComponent";
-export async function getProductsInCategory(productCategoryName: string) {
+export async function getProducts(productCategoryName: string) {
   let productArray: ProductDetails[] = [];
   const categoryRef = "admin/product-doc/products";
 
-  const q = query(
-    collection(db, "admin/product-doc/products"),
-    where("selectedCategory", "==", productCategoryName)
-  );
+  const q = query(collection(db, "admin/product-doc/products"));
   let querySnapShot = await getDocs(q);
 
   for (const doc of querySnapShot.docs) {
@@ -24,10 +21,10 @@ export async function getProductsInCategory(productCategoryName: string) {
       doc.id,
       doc.data().selectedCategory
     );
-    
+
     const documentObj: ProductDetails = {
       ...doc.data(),
-      productImage: productImage, 
+      productImage: productImage,
     } as ProductDetails;
 
     productArray.push(documentObj);

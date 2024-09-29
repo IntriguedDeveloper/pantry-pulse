@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 
-import { getProductsInCategory } from "../handler";
+import { getProducts } from "../handler";
 import styles from "./DropDownStyles.module.css";
 import useSWR from "swr";
 import ProductFragment from "./ProductFragment";
@@ -13,9 +13,9 @@ type DropDownProductComponentTypes = {
 
 export default function DropDownProductComponent({
   categoryName,
-}: DropDownProductComponentTypes) {
+}: DropDownProductComponentTypes) { 
   const categoryArrayFetcher = async () => {
-    const categoryArray = await getProductsInCategory(categoryName);
+    const categoryArray = await getProducts(categoryName);
     return categoryArray;
   };
 
@@ -38,7 +38,7 @@ export default function DropDownProductComponent({
                   key={index}
                 ></ProductFragment>
               ))
-            : "No data found"}
+            : "Loading..."}
         </div>
       </div>
     </>
