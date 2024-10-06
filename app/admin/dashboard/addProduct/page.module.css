@@ -166,7 +166,8 @@
 
 .dropDownDiv {
   height: max-content;
-  max-height: 70vh;
+  max-height: 20vh;
+  overflow-y: scroll;
   width: 70vh;
   display: flex;
   align-items: center;

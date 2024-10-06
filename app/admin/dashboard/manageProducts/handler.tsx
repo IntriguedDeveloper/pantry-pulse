@@ -1,3 +1,4 @@
+"use server";
 import {
   getDoc,
   getDocs,
@@ -9,13 +10,14 @@ import {
 import { db, storage } from "@/firebase/clientApp";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { ProductDetails } from "../addProduct/ClientComponent";
-export async function getProducts(productCategoryName: string) {
+export async function getProducts() {
+ 
   let productArray: ProductDetails[] = [];
   const categoryRef = "admin/product-doc/products";
 
   const q = query(collection(db, "admin/product-doc/products"));
   let querySnapShot = await getDocs(q);
-
+  
   for (const doc of querySnapShot.docs) {
     const productImage = await getProductImage(
       doc.id,
@@ -29,7 +31,7 @@ export async function getProducts(productCategoryName: string) {
 
     productArray.push(documentObj);
   }
-  console.log(productArray);
+  
   return productArray;
 }
 export async function getProductImage(

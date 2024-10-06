@@ -2,27 +2,17 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 
-import { getProducts } from "../handler";
 import styles from "./DropDownStyles.module.css";
 import useSWR from "swr";
 import ProductFragment from "./ProductFragment";
-import { ProductDetails } from "../../addProduct/ClientComponent";
+import { ProductDetails } from "../../../addProduct/ClientComponent";
 type DropDownProductComponentTypes = {
-  categoryName: string;
+  data: any;
 };
 
 export default function DropDownProductComponent({
-  categoryName,
-}: DropDownProductComponentTypes) { 
-  const categoryArrayFetcher = async () => {
-    const categoryArray = await getProducts(categoryName);
-    return categoryArray;
-  };
-
-  const { data, error } = useSWR(
-    categoryName ? `products-${categoryName}` : null,
-    categoryArrayFetcher
-  );
+  data,
+}: DropDownProductComponentTypes) {
   return (
     <>
       <div className={styles.dropDownContainer}>
