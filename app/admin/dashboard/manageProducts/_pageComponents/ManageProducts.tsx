@@ -5,7 +5,7 @@ import styles from "./ManageProducts.module.css";
 import searchIcon from "@public/client/searchIcon.svg";
 import DropDownProductComponent from "./_defaultViewers/DropDownProductComponent";
 import ProductSearchComponent from "./_searchBox/ProductSearchComponent";
-import { getProducts } from "../handler"; // Server action
+import { getProducts } from "../handler";
 
 export default function ManageProducts() {
   const [searchState, setSearchState] = useState(true);
@@ -39,7 +39,7 @@ export default function ManageProducts() {
     setSearchState(!searchState);
   };
 
-  // Show loading spinner
+
   if (loading) {
     return (
       <div className={styles.centerSpinner}>
@@ -48,7 +48,7 @@ export default function ManageProducts() {
     );
   }
 
-  // Show error if occurred
+
   if (error) return <div>{error}</div>;
 
   return (
