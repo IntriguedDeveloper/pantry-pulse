@@ -24,6 +24,10 @@ export default function ProductSearchComponent({
     setSearchState(!categorySearchState);
     setClickedCategory(selectedCategory);
   };
+  const handleLeftArrowClick = () => {
+    setSearchState(!categorySearchState);
+    setClickedCategory("");
+  };
   return (
     <>
       {!isCrossClicked && (
@@ -61,6 +65,7 @@ export default function ProductSearchComponent({
                       stockQuantity={product.stockQuantity}
                       imageURL={product.productImage}
                       key={index}
+                      handleLeftArrowClick={handleLeftArrowClick}
                     ></ProductInfoCard>
                   ) : null
                 )}
@@ -75,11 +80,13 @@ function ProductInfoCard({
   brandName,
   stockQuantity,
   imageURL,
+  handleLeftArrowClick,
 }: {
   productName: string;
   brandName: string;
   stockQuantity: number;
   imageURL: string;
+  handleLeftArrowClick: () => void;
 }) {
   return (
     <div className={styles.productWrapper}>
@@ -103,6 +110,7 @@ function ProductInfoCard({
         src={leftArrow}
         alt="Left Arrow"
         className={styles.leftArrow}
+        onClick={handleLeftArrowClick}
       ></Image>
     </div>
   );
@@ -117,12 +125,14 @@ function CategoryInfoCard({
   clickCallback: Function;
 }) {
   return (
-    <div className={styles.itemContainer}>
+    <div
+      className={styles.itemContainer}
+      onClick={() => {
+        clickCallback(categoryName);
+      }}
+    >
       <div className={styles.imageContainer}>
         <Image
-          onClick={() => {
-            clickCallback(categoryName);
-          }}
           src={categoryImageURL}
           className={styles.itemImage}
           alt="Category Image"
