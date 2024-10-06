@@ -4,7 +4,7 @@ import styles from "./ProductSearch.module.css";
 import Image from "next/image";
 import { ProductDetails } from "../../../addProduct/ClientComponent";
 import crossIcon from "@/public/common/crossIcon.svg";
-
+import leftArrow from "@/public/common/left-arrow.png";
 export default function ProductSearchComponent({
   categoryList,
   handleSearchToggle,
@@ -14,6 +14,7 @@ export default function ProductSearchComponent({
 }) {
   const [categorySearchState, setSearchState] = useState(true);
   const [isCrossClicked, setIsCrossClicked] = useState(false);
+  const [clickedCategory, setClickedCategory] = useState("");
   const slicedArray = removeDuplicateCategories(categoryList);
   const handleCrossClick = () => {
     setIsCrossClicked(!isCrossClicked);
@@ -21,6 +22,11 @@ export default function ProductSearchComponent({
   };
   const categoryClicked = (selectedCategory: string) => {
     setSearchState(!categorySearchState);
+    setClickedCategory(selectedCategory);
+  };
+  const handleLeftArrowClick = () => {
+    setSearchState(!categorySearchState);
+    setClickedCategory("");
   };
   return (
     <>
@@ -38,7 +44,7 @@ export default function ProductSearchComponent({
             placeholder={
               categorySearchState
                 ? "Search for product categories"
-                : "Search for products"
+                : `Search for products in category : ${clickedCategory}`
             }
           ></input>
           <div className={styles.cardContainer}>
@@ -51,15 +57,18 @@ export default function ProductSearchComponent({
                     key={index}
                   ></CategoryInfoCard>
                 ))
-              : categoryList.map((product: ProductDetails, index: number) => (
-                  <ProductInfoCard
-                    productName={product.productName}
-                    brandName={product.brandName}
-                    stockQuantity={product.stockQuantity}
-                    imageURL={product.productImage}
-                    key={index}
-                  ></ProductInfoCard>
-                ))}
+              : categoryList.map((product: ProductDetails, index: number) =>
+                  product.selectedCategory == clickedCategory ? (
+                    <ProductInfoCard
+                      productName={product.productName}
+                      brandName={product.brandName}
+                      stockQuantity={product.stockQuantity}
+                      imageURL={product.productImage}
+                      key={index}
+                      handleLeftArrowClick={handleLeftArrowClick}
+                    ></ProductInfoCard>
+                  ) : null
+                )}
           </div>
         </div>
       )}
@@ -71,27 +80,38 @@ function ProductInfoCard({
   brandName,
   stockQuantity,
   imageURL,
+  handleLeftArrowClick,
 }: {
   productName: string;
   brandName: string;
   stockQuantity: number;
   imageURL: string;
+  handleLeftArrowClick: () => void;
 }) {
   return (
-    <div className={styles.itemContainer}>
-      <div className={styles.imageContainer}>
-        <Image
-          src={imageURL}
-          height={100}
-          width={100}
-          alt="Product Image"
-        ></Image>
+    <div className={styles.productWrapper}>
+      <div className={styles.itemContainer}>
+        <div className={styles.imageContainer}>
+          <Image
+            src={imageURL}
+            height={100}
+            width={100}
+            alt="Product Image"
+            className={styles.itemImage}
+          ></Image>
+        </div>
+        <div className={styles.productDetailsContainer}>
+          <a>{productName}</a>
+          <a>{brandName}</a>
+          <a>{stockQuantity}</a>
+        </div>
       </div>
-      <div className={styles.productDetailsContainer}>
-        <a>{productName}</a>
-        <a>{brandName}</a>
-        <a>{stockQuantity}</a>
-      </div>
+      <Image
+        src={leftArrow}
+        alt="Left Arrow"
+        className={styles.leftArrow}
+        onClick={handleLeftArrowClick}
+      ></Image>
     </div>
   );
 }
@@ -105,16 +125,19 @@ function CategoryInfoCard({
   clickCallback: Function;
 }) {
   return (
-    <div className={styles.itemContainer}>
+    <div
+      className={styles.itemContainer}
+      onClick={() => {
+        clickCallback(categoryName);
+      }}
+    >
       <div className={styles.imageContainer}>
         <Image
-          onClick={() => {
-            clickCallback(categoryName);
-          }}
           src={categoryImageURL}
+          className={styles.itemImage}
           alt="Category Image"
-          height={150}
-          width={170}
+          height={120}
+          width={150}
         ></Image>
       </div>
       <div className={styles.categoryNameContainer}>
