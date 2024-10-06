@@ -8,7 +8,7 @@ import ProductSearchComponent from "./_searchBox/ProductSearchComponent";
 import { getProducts } from "../handler"; // Server action
 
 export default function ManageProducts() {
-  const [searchState, setSearchState] = useState(true);
+  const [searchState, setSearchState] = useState(false);
   const [categoryArray, setCategoryArray] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

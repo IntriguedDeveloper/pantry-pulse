@@ -16,17 +16,19 @@ export default function DropDownProductComponent({
   return (
     <>
       <div className={styles.dropDownContainer}>
-        <div className={styles.titleContainer}></div>
+        <div className={styles.titleContainer}>Slaves</div>
         <div className={styles.listContainer}>
           {data && data.length > 0
             ? data.map((product: ProductDetails, index: number) => (
-                <ProductFragment
+                <div className={styles.productFragment}>
+                  <ProductFragment
+                  productImage={product.productImage}
                   productName={product.productName}
                   brandName={product.brandName}
                   stockQuantity={product.stockQuantity}
-                  productImage={product.productImage}
                   key={index}
                 ></ProductFragment>
+                </div>
               ))
             : "Loading..."}
         </div>
