@@ -39,6 +39,7 @@ export type ProductDetails = {
   isProductAvailableForSale: boolean;
   productWeight: number;
   productImage ?: any;
+  matchCounter ?: any;
 };
 
 type ClientProps = {
