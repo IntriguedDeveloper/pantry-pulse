@@ -29,9 +29,21 @@ export default function ProductSearchComponent({
   const [debouncedSearchedInput, setDebouncedSearchInput] = useState("");
 
   useEffect(() => {
-    if(!searchInput){
+    if (!searchInput) {
       setMapableArray(slicedArray);
     }
+  }, [searchInput, slicedArray]);
+
+  useEffect(() => {
+    const timeOutID = setTimeout(() => {
+      setDebouncedSearchInput(searchInput);
+    }, 300);
+    return () => {
+      clearTimeout(timeOutID);
+    };
+  }, [searchInput]); //onChange input debouncing
+
+  useEffect(() => {
     const fetchSortedList = async () => {
       try {
         const sortedList = await searchCategories(
@@ -44,16 +56,7 @@ export default function ProductSearchComponent({
       }
     };
     fetchSortedList();
-  }, [debouncedSearchedInput]); // Use debounced input
-
-  useEffect(() => {
-    const timeOutID = setTimeout(() => {
-      setDebouncedSearchInput(searchInput);
-    }, 300);
-    return () => {
-      clearTimeout(timeOutID);
-    };
-  }, [searchInput]); //onChange input debouncing
+  }, [debouncedSearchedInput, slicedArray]); // Use debounced input
 
   const handleCrossClick = () => {
     setIsCrossClicked(!isCrossClicked);
