@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./ProductSearch.module.css";
 import Image from "next/image";
 import { ProductDetails } from "../../../addProduct/ClientComponent";
@@ -15,7 +15,18 @@ export default function ProductSearchComponent({
   const [categorySearchState, setSearchState] = useState(true);
   const [isCrossClicked, setIsCrossClicked] = useState(false);
   const [clickedCategory, setClickedCategory] = useState("");
-  const slicedArray = removeDuplicateCategories(categoryList);
+  const slicedArray = useMemo(() => removeDuplicateCategories(categoryList), [categoryList]); //expensive operation
+ 
+  const [searchInput, setSearchInput] = useState('');
+  const [debouncedSearchedInput, setDebouncedSearchInput] = useState('')
+  useEffect(() => {
+    const timeOutID = setTimeout(() => {
+      setDebouncedSearchInput(searchInput);
+    }, 300)
+    return () => {
+      clearTimeout(timeOutID);
+    }
+  }, [searchInput]) //onChange input debouncing
   const handleCrossClick = () => {
     setIsCrossClicked(!isCrossClicked);
     handleSearchToggle();
@@ -28,6 +39,20 @@ export default function ProductSearchComponent({
     setSearchState(!categorySearchState);
     setClickedCategory("");
   };
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    if(categorySearchState == true){ //search for categories
+      let modifiedCategoryList = [];
+      for(let i = 0; i < slicedArray.length; i++){
+        for(let j = 0; j < slicedArray[i].selectedCategory.length; j++){
+          
+        }
+      }
+    }
+    else{ //search for products
+
+    }
+  }
   return (
     <>
       {!isCrossClicked && (
@@ -46,6 +71,7 @@ export default function ProductSearchComponent({
                 ? "Search for product categories"
                 : `Search for products in category : ${clickedCategory}`
             }
+            onChange={handleSearch}
           ></input>
           <div className={styles.cardContainer}>
             {categorySearchState
