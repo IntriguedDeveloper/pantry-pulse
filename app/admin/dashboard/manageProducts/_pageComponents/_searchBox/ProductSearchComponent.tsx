@@ -5,6 +5,8 @@ import Image from "next/image";
 import { ProductDetails } from "../../../addProduct/ClientComponent";
 import crossIcon from "@/public/common/crossIcon.svg";
 import leftArrow from "@/public/common/left-arrow.png";
+import { searchCategories } from "./handler";
+
 export default function ProductSearchComponent({
   categoryList,
   handleSearchToggle,
@@ -15,44 +17,63 @@ export default function ProductSearchComponent({
   const [categorySearchState, setSearchState] = useState(true);
   const [isCrossClicked, setIsCrossClicked] = useState(false);
   const [clickedCategory, setClickedCategory] = useState("");
-  const slicedArray = useMemo(() => removeDuplicateCategories(categoryList), [categoryList]); //expensive operation
- 
-  const [searchInput, setSearchInput] = useState('');
-  const [debouncedSearchedInput, setDebouncedSearchInput] = useState('')
+
+  const slicedArray = useMemo(
+    () => removeDuplicateCategories(categoryList),
+    [categoryList]
+  ); //expensive operation
+
+  const [mapableArray, setMapableArray] =
+    useState<ProductDetails[]>(slicedArray);
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedSearchedInput, setDebouncedSearchInput] = useState("");
+
+  useEffect(() => {
+    if(!searchInput){
+      setMapableArray(slicedArray);
+    }
+    const fetchSortedList = async () => {
+      try {
+        const sortedList = await searchCategories(
+          slicedArray,
+          debouncedSearchedInput
+        );
+        setMapableArray(sortedList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchSortedList();
+  }, [debouncedSearchedInput]); // Use debounced input
+
   useEffect(() => {
     const timeOutID = setTimeout(() => {
       setDebouncedSearchInput(searchInput);
-    }, 300)
+    }, 300);
     return () => {
       clearTimeout(timeOutID);
-    }
-  }, [searchInput]) //onChange input debouncing
+    };
+  }, [searchInput]); //onChange input debouncing
+
   const handleCrossClick = () => {
     setIsCrossClicked(!isCrossClicked);
     handleSearchToggle();
   };
+
   const categoryClicked = (selectedCategory: string) => {
     setSearchState(!categorySearchState);
     setClickedCategory(selectedCategory);
   };
+
   const handleLeftArrowClick = () => {
     setSearchState(!categorySearchState);
     setClickedCategory("");
   };
-  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-    if(categorySearchState == true){ //search for categories
-      let modifiedCategoryList = [];
-      for(let i = 0; i < slicedArray.length; i++){
-        for(let j = 0; j < slicedArray[i].selectedCategory.length; j++){
-          
-        }
-      }
-    }
-    else{ //search for products
 
-    }
-  }
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
   return (
     <>
       {!isCrossClicked && (
@@ -62,7 +83,7 @@ export default function ProductSearchComponent({
             alt="crossIcon"
             className={styles.crossIcon}
             onClick={handleCrossClick}
-          ></Image>
+          />
           <input
             type="text"
             className={styles.searchBox}
@@ -72,35 +93,54 @@ export default function ProductSearchComponent({
                 : `Search for products in category : ${clickedCategory}`
             }
             onChange={handleSearch}
-          ></input>
+          />
           <div className={styles.cardContainer}>
-            {categorySearchState
-              ? slicedArray.map((product: ProductDetails, index: number) => (
+            {categorySearchState ? (
+              searchInput === "" ? (
+                mapableArray.map((product: ProductDetails, index: number) => (
                   <CategoryInfoCard
                     categoryName={product.selectedCategory}
                     categoryImageURL={product.productImage}
                     clickCallback={categoryClicked}
                     key={index}
-                  ></CategoryInfoCard>
+                  />
                 ))
-              : categoryList.map((product: ProductDetails, index: number) =>
-                  product.selectedCategory == clickedCategory ? (
-                    <ProductInfoCard
-                      productName={product.productName}
-                      brandName={product.brandName}
-                      stockQuantity={product.stockQuantity}
-                      imageURL={product.productImage}
+              ) : mapableArray.filter((product) => product.matchCounter > 2)
+                  .length > 0 ? (
+                mapableArray
+                  .filter((product) => product.matchCounter > 2)
+                  .map((product: ProductDetails, index: number) => (
+                    <CategoryInfoCard
+                      categoryName={product.selectedCategory}
+                      categoryImageURL={product.productImage}
+                      clickCallback={categoryClicked}
                       key={index}
-                      handleLeftArrowClick={handleLeftArrowClick}
-                    ></ProductInfoCard>
-                  ) : null
-                )}
+                    />
+                  ))
+              ) : (
+                <div>No products found</div>
+              )
+            ) : (
+              categoryList.map((product: ProductDetails, index: number) =>
+                product.selectedCategory === clickedCategory ? (
+                  <ProductInfoCard
+                    productName={product.productName}
+                    brandName={product.brandName}
+                    stockQuantity={product.stockQuantity}
+                    imageURL={product.productImage}
+                    key={index}
+                    handleLeftArrowClick={handleLeftArrowClick}
+                  />
+                ) : null
+              )
+            )}
           </div>
         </div>
       )}
     </>
   );
 }
+
 function ProductInfoCard({
   productName,
   brandName,
@@ -124,7 +164,7 @@ function ProductInfoCard({
             width={100}
             alt="Product Image"
             className={styles.itemImage}
-          ></Image>
+          />
         </div>
         <div className={styles.productDetailsContainer}>
           <a>{productName}</a>
@@ -137,10 +177,11 @@ function ProductInfoCard({
         alt="Left Arrow"
         className={styles.leftArrow}
         onClick={handleLeftArrowClick}
-      ></Image>
+      />
     </div>
   );
 }
+
 function CategoryInfoCard({
   categoryName,
   categoryImageURL,
@@ -164,7 +205,7 @@ function CategoryInfoCard({
           alt="Category Image"
           height={120}
           width={150}
-        ></Image>
+        />
       </div>
       <div className={styles.categoryNameContainer}>
         <a>{categoryName}</a>
@@ -172,10 +213,11 @@ function CategoryInfoCard({
     </div>
   );
 }
+
 function removeDuplicateCategories(list: ProductDetails[]): ProductDetails[] {
   let newArr = [];
   const n = list.length;
-  if (n == 0 || n == 1) {
+  if (n === 0 || n === 1) {
     return list;
   }
   for (let i = 0; i < n - 1; i++) {
