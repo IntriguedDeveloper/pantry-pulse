@@ -19,8 +19,8 @@ export default function ProductFragment({
         <Image
           src={productImage}
           alt="productImage"
-          height={50}
-          width={50}
+          height={120}
+          width={120}
         ></Image>
       </div>
       <div className={styles.detailsDiv}>

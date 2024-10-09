@@ -20,7 +20,6 @@ export default function DropDownProductComponent({
         <div className={styles.listContainer}>
           {data && data.length > 0
             ? data.map((product: ProductDetails, index: number) => (
-                <div className={styles.productFragment}>
                   <ProductFragment
                   productImage={product.productImage}
                   productName={product.productName}
@@ -28,7 +27,6 @@ export default function DropDownProductComponent({
                   stockQuantity={product.stockQuantity}
                   key={index}
                 ></ProductFragment>
-                </div>
               ))
             : "Loading..."}
         </div>
