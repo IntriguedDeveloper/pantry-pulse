@@ -6,22 +6,22 @@ import { ProductDetails } from "../../../addProduct/ClientComponent";
 import crossIcon from "@/public/common/crossIcon.svg";
 import leftArrow from "@/public/common/left-arrow.png";
 import { searchCategories } from "./handler";
-
+//TODO : search functionality for products
+//TODO : make product management UI
 export default function ProductSearchComponent({
   categoryList,
   handleSearchToggle,
+  slicedArray,
 }: {
   categoryList: ProductDetails[];
   handleSearchToggle: () => void;
+  slicedArray: ProductDetails[];
 }) {
   const [categorySearchState, setSearchState] = useState(true);
   const [isCrossClicked, setIsCrossClicked] = useState(false);
   const [clickedCategory, setClickedCategory] = useState("");
 
-  const slicedArray = useMemo(
-    () => removeDuplicateCategories(categoryList),
-    [categoryList]
-  ); //expensive operation
+ 
 
   const [mapableArray, setMapableArray] =
     useState<ProductDetails[]>(slicedArray);
@@ -67,7 +67,7 @@ export default function ProductSearchComponent({
     setSearchState(!categorySearchState);
     setClickedCategory(selectedCategory);
   };
-
+  const productClicked = (clickedProductName: string) => {};
   const handleLeftArrowClick = () => {
     setSearchState(!categorySearchState);
     setClickedCategory("");
@@ -133,6 +133,7 @@ export default function ProductSearchComponent({
                     imageURL={product.productImage}
                     key={index}
                     handleLeftArrowClick={handleLeftArrowClick}
+                    productClicked={productClicked}
                   />
                 ) : null
               )
@@ -150,16 +151,21 @@ function ProductInfoCard({
   stockQuantity,
   imageURL,
   handleLeftArrowClick,
+  productClicked,
 }: {
   productName: string;
   brandName: string;
   stockQuantity: number;
   imageURL: string;
   handleLeftArrowClick: () => void;
+  productClicked: Function;
 }) {
   return (
     <div className={styles.productWrapper}>
-      <div className={styles.itemContainer}>
+      <div
+        className={styles.itemContainer}
+        onClick={() => productClicked(productName)}
+      >
         <div className={styles.imageContainer}>
           <Image
             src={imageURL}
@@ -208,6 +214,8 @@ function CategoryInfoCard({
           alt="Category Image"
           height={120}
           width={150}
+          placeholder="empty"
+          loading="lazy"
         />
       </div>
       <div className={styles.categoryNameContainer}>
@@ -217,17 +225,3 @@ function CategoryInfoCard({
   );
 }
 
-function removeDuplicateCategories(list: ProductDetails[]): ProductDetails[] {
-  let newArr = [];
-  const n = list.length;
-  if (n === 0 || n === 1) {
-    return list;
-  }
-  for (let i = 0; i < n - 1; i++) {
-    if (list[i].selectedCategory !== list[i + 1].selectedCategory) {
-      newArr.push(list[i]);
-    }
-  }
-  newArr.push(list[n - 1]);
-  return newArr;
-}

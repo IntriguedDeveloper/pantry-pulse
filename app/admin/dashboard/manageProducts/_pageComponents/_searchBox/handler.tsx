@@ -14,7 +14,7 @@ export async function searchCategories(
     for (let j = 0; j < nameLength; j++) {
       if (equalsIgnoringCase(categoryName.charAt(j), searchQuery.charAt(0))) {
         matchCounter = 1;
-				console.log(categoryName, searchQuery);
+        console.log(categoryName, searchQuery);
         if (equalsIgnoringCase(categoryName, searchQuery)) {
           matchCounter = searchQuery.length + 1;
           break;
@@ -44,7 +44,7 @@ export async function searchCategories(
 
   // Sort the array by matchCounter in descending order
   mergeSortProductDetails(slicedArray);
-  
+
   return slicedArray;
 }
 
@@ -110,3 +110,5 @@ function equalsIgnoringCase(string1: string, string2: string): boolean {
     string1.localeCompare(string2, undefined, { sensitivity: "base" }) === 0
   );
 }
+
+

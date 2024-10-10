@@ -8,10 +8,12 @@ import ProductFragment from "./ProductFragment";
 import { ProductDetails } from "../../../addProduct/ClientComponent";
 type DropDownProductComponentTypes = {
   data: any;
+  slicedArray: any;
 };
 
 export default function DropDownProductComponent({
   data,
+  slicedArray,
 }: DropDownProductComponentTypes) {
   return (
     <>
@@ -20,7 +22,7 @@ export default function DropDownProductComponent({
         <div className={styles.listContainer}>
           {data && data.length > 0
             ? data.map((product: ProductDetails, index: number) => (
-                  <ProductFragment
+                <ProductFragment
                   productImage={product.productImage}
                   productName={product.productName}
                   brandName={product.brandName}

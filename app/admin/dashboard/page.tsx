@@ -4,7 +4,7 @@ import addProductIcon from "/public/admin/addProductIcon.png";
 import editProductIcon from "/public/admin/editProductIcon.png";
 import productCategoryIcon from "/public/admin/productCategoriesIcon.png";
 import deleteProductIcon from "/public/admin/bin.png";
-//TODO : create page to manage existing products
+
 export default function AdminDashboard() {
   return (
     <div>

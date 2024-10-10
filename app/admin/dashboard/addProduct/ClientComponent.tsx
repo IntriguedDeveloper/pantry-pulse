@@ -11,7 +11,7 @@ import { db, storage } from "@/firebase/clientApp";
 import { ref, uploadBytes } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-//TODO : review code
+
 type FileObject = {
   file: File;
   URL: string;
@@ -33,20 +33,22 @@ export type ProductDetails = {
   SKUCode: string;
   productDescription: string;
   selectedCategory: string;
-  productPrice:  number
+  productPrice: number;
   discountPercentage: number;
   stockQuantity: number;
   isProductAvailableForSale: boolean;
   productWeight: number;
-  productImage ?: any;
-  matchCounter ?: any;
+  productImage?: any;
+  matchCounter?: any;
 };
 
 type ClientProps = {
   categories: String[];
 };
 
-export default function ClientComponent({ categories: initialCategories }: ClientProps) {
+export default function ClientComponent({
+  categories: initialCategories,
+}: ClientProps) {
   const router = useRouter();
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -55,10 +57,11 @@ export default function ClientComponent({ categories: initialCategories }: Clien
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [isImageUploaded, setImageUploadStatus] = useState<boolean>(false);
   const [image, setImage] = useState<ImageState>(null);
-  const [isCategorySelected, setIsCategorySelected] = useState<CategorySelection>({
-    status: false,
-    categoryName: "",
-  });
+  const [isCategorySelected, setIsCategorySelected] =
+    useState<CategorySelection>({
+      status: false,
+      categoryName: "",
+    });
   const [swipeCount, setSwipeCount] = useState<number>(0);
   const [productDetails, setProductDetails] = useState<ProductDetails>({
     productName: "",
@@ -78,8 +81,8 @@ export default function ClientComponent({ categories: initialCategories }: Clien
   }, [image]);
 
   const toggleDropdown = () => {
-    setIsVisible(prev => !prev);
-    setRotate(prev => !prev);
+    setIsVisible((prev) => !prev);
+    setRotate((prev) => !prev);
     setIsCategorySelected({
       status: false,
       categoryName: "",
@@ -91,7 +94,7 @@ export default function ClientComponent({ categories: initialCategories }: Clien
       status: true,
       categoryName: categoryName,
     });
-    setProductDetails(prev => ({
+    setProductDetails((prev) => ({
       ...prev,
       selectedCategory: categoryName,
     }));
@@ -100,30 +103,44 @@ export default function ClientComponent({ categories: initialCategories }: Clien
   };
 
   const handleToggle = () => {
-    setIsChecked(prev => !prev);
-    setProductDetails(prev => ({
+    setIsChecked((prev) => !prev);
+    setProductDetails((prev) => ({
       ...prev,
       isProductAvailableForSale: !isChecked,
     }));
   };
-
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files ? Array.from(event.target.files) : [];
-    if (files.length > 0) {
-      const fileArray: FileObject[] = files.map((file, index) => ({
-        file,
-        URL: URL.createObjectURL(file),
-        index: index,
-      }));
-      setImage({ files: fileArray });
-    } else {
-      console.error("No file selected or invalid file");
+    const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB size limit
+    const validFiles: FileObject[] = [];
+    let hasInvalidFile = false;
+
+    files.forEach((file, index) => {
+      if (file.size <= MAX_FILE_SIZE) {
+        validFiles.push({
+          file,
+          URL: URL.createObjectURL(file),
+          index: index,
+        });
+      } else {
+        hasInvalidFile = true;
+        alert(`File ${file.name} is too large. Max file size is 2MB.`);
+      }
+    });
+
+    if (validFiles.length > 0) {
+      setImage({ files: validFiles });
+    }
+
+    if (!hasInvalidFile && validFiles.length === 0) {
+      console.error("No valid file selected or invalid file");
     }
   };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setProductDetails(prev => ({ ...prev, [name]: value }));
+    setProductDetails((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -302,7 +319,7 @@ export default function ClientComponent({ categories: initialCategories }: Clien
               <h3>Product Media</h3>
               {isImageUploaded ? (
                 <div className={styles.selectedImageContainer}>
-                  {image?.files.map((fileObject, index) => (
+                  {image?.files.map((fileObject, index) =>
                     swipeCount === fileObject.index ? (
                       <Image
                         src={fileObject.URL}
@@ -312,14 +329,16 @@ export default function ClientComponent({ categories: initialCategories }: Clien
                         key={index}
                       />
                     ) : null
-                  ))}
+                  )}
                   <Image
                     src={swipeArrow}
                     className={styles.swipeArrowRight}
                     alt="arrow"
                     onClick={() => {
-                      setSwipeCount(prevCount =>
-                        prevCount >= (image?.files.length ?? 0) - 1 ? 0 : swipeCount + 1
+                      setSwipeCount((prevCount) =>
+                        prevCount >= (image?.files.length ?? 0) - 1
+                          ? 0
+                          : swipeCount + 1
                       );
                     }}
                   />
@@ -328,14 +347,19 @@ export default function ClientComponent({ categories: initialCategories }: Clien
                     alt="arrow"
                     className={styles.swipeArrowLeft}
                     onClick={() => {
-                      setSwipeCount(prevCount =>
-                        prevCount <= 0 ? (image?.files.length ?? 0) - 1 : swipeCount - 1
+                      setSwipeCount((prevCount) =>
+                        prevCount <= 0
+                          ? (image?.files.length ?? 0) - 1
+                          : swipeCount - 1
                       );
                     }}
                   />
                 </div>
               ) : (
-                <label className={styles.productImageButton} htmlFor="file-upload">
+                <label
+                  className={styles.productImageButton}
+                  htmlFor="file-upload"
+                >
                   <input
                     id="file-upload"
                     type="file"

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./ManageProducts.module.css";
 import searchIcon from "@public/client/searchIcon.svg";
 import DropDownProductComponent from "./_defaultViewers/DropDownProductComponent";
@@ -28,7 +28,10 @@ export default function ManageProducts() {
 
     fetchProducts();
   }, []);
-
+  const slicedArray = useMemo(
+    () => removeDuplicateCategories(categoryArray),
+    [categoryArray]
+  ); //expensive operation
   const handleSearchToggle = () => {
     setSearchState(!searchState);
   };
@@ -68,12 +71,27 @@ export default function ManageProducts() {
             <ProductSearchComponent
               categoryList={categoryArray}
               handleSearchToggle={handleSearchToggle}
+              slicedArray = {slicedArray}
             />
           ) : (
-            <DropDownProductComponent data={categoryArray} />
+            <DropDownProductComponent data={categoryArray} slicedArray = {slicedArray}/>
           )}
         </div>
       </div>
     </>
   );
+}
+function removeDuplicateCategories(list: ProductDetails[]): ProductDetails[] {
+  let newArr = [];
+  const n = list.length;
+  if (n === 0 || n === 1) {
+    return list;
+  }
+  for (let i = 0; i < n - 1; i++) {
+    if (list[i].selectedCategory !== list[i + 1].selectedCategory) {
+      newArr.push(list[i]);
+    }
+  }
+  newArr.push(list[n - 1]);
+  return newArr;
 }

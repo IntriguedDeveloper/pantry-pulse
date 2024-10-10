@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./DropDownStyles.module.css";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
-
+//TODO: fix LCP issue
 export default function ProductFragment({
   productName,
   brandName,
@@ -21,6 +21,8 @@ export default function ProductFragment({
           alt="productImage"
           height={120}
           width={120}
+          placeholder="empty"
+          priority
         ></Image>
       </div>
       <div className={styles.detailsDiv}>
