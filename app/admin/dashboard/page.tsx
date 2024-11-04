@@ -15,7 +15,8 @@ export default function AdminDashboard() {
           image={addProductIcon}
           routePath={"./dashboard/addProduct"}
         ></Card>
-        <Card title={"Manage Existing Products"} image={editProductIcon}></Card>
+        <Card title={"Manage Existing Products"} image={editProductIcon}
+        routePath={"./dashboard/manageProducts"}></Card>
         <Card
           title={"Manage Categories"}
           image={productCategoryIcon}

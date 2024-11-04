@@ -7,31 +7,42 @@ import { useRouter } from "next/navigation";
 export default function AdminAuthSignUp() {
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
-  const[alertMessage, setAlertMessage] = useState(null);
+  const [alertMessage, setAlertMessage] = useState<boolean>(false);
+  const [isSubmit, setSubmit] = useState(false);
   const router = useRouter();
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append("adminEmail", adminEmail);
-    formData.append("adminPassword", adminPassword);
-
-    // Call AdminAuthorization function with form data
-    const response = await AdminAuthorizationSignUp(formData);
-    setAlertMessage(response.alertMessage);
-  };
   useEffect(() => {
-    if(alertMessage == true){
-      alert("Signup successful")
-      router.push('/admin/auth/login')
+    const handleSubmit = async () => {
+      const formData = new FormData();
+      formData.append("adminEmail", adminEmail);
+      formData.append("adminPassword", adminPassword);
+
+      const response = await AdminAuthorizationSignUp(formData);
+      if (response.alertMessage != undefined) {
+        setAlertMessage(response.alertMessage);
+      }
+    };
+    handleSubmit();
+  }, [isSubmit]);
+
+  useEffect(() => {
+    if (alertMessage == true) {
+      alert("Signup successful");
+      router.push("/admin/auth/login");
     }
-  },[alertMessage])
+  }, [alertMessage]);
   return (
     <>
       <div className={styles.wrapper}>
         <div className={styles.formContainer}>
           <h1>PantryPulse</h1>
           <h2>Welcome admin!</h2>
-          <form className={styles.inputForm} onSubmit={handleSubmit}>
+          <form
+            className={styles.inputForm}
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSubmit(true);
+            }}
+          >
             <input
               type="email"
               name="adminEmail"
